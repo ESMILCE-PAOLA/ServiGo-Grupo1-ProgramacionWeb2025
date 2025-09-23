@@ -1,0 +1,13 @@
+.hero {
+  background: linear-gradient(90deg, #0066cc, #003366);
+}
+
+.card img {
+  height: 180px;
+  object-fit: cover;
+}
+
+.banner-final {
+  background: linear-gradient(90deg, #003366, #0066cc);
+}
+
