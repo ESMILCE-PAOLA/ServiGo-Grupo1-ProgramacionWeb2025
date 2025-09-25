@@ -3,12 +3,14 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Solicitudes – ServiGo</title>
+  <title>Nueva Solicitud – ServiGo</title>
 
   <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-  <link href="estilo.css" rel="stylesheet">
+
+  <!-- CSS propio -->
+  <link href="nueva_solicitud.css" rel="stylesheet">
 </head>
 <body>
 
@@ -16,22 +18,21 @@
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
     <div class="container">
       <a class="navbar-brand fw-bold" href="#">⚡ ServiGo</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navAdmin">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navCliente">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="navAdmin">
+      <div class="collapse navbar-collapse" id="navCliente">
         <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link" href="">Inicio</a></li>
-          <li class="nav-item"><a class="nav-link" href="">Perfil</a></li>
-          <li class="nav-item"><a class="nav-link" href="">Solicitudes</a></li>          
-          <li class="nav-item"><a class="btn btn-outline-light btn-sm ms-3" href="index.html">Cerrar Sesión</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link" href="perfil.html">Perfil</a></li>
+          <li class="nav-item"><a class="nav-link" href="solicitudes.html">Solicitudes</a></li>          
+          <li class="nav-item"><a class="btn btn-outline-light btn-sm ms-3" href="../visitante/index.html">Cerrar Sesión</a></li>
         </ul>
       </div>
     </div>
   </nav>
 
-
-  <!-- FORMULARIO SOLICITUD -->
+  <!-- FORMULARIO -->
   <section class="container my-5">
     <h2 class="text-center mb-4">Crear nueva solicitud</h2>
 
@@ -63,14 +64,29 @@
 
       <!-- Selección de profesionales -->
       <div class="mb-3">
-        <label class="form-label">Enviar a</label>
-        <select id="profesionales" class="form-select" multiple>
-          <option value="1">Carlos López – Electricista</option>
-          <option value="3">Martín Díaz – Carpintero</option>
-          <option value="4">Lucía Fernández – Barbera</option>
-          <option value="5">Pedro Gómez – Electricista</option>
-        </select>
-        <div class="form-text">Mantené presionada la tecla CTRL (Windows) o CMD (Mac) para seleccionar varios.</div>
+        <label class="form-label">Enviar a profesionales favoritos</label>
+        <!-- Buscador -->
+        <input type="text" class="form-control mb-2" id="buscarProfesional" placeholder="Buscar en favoritos...">
+        
+        <!-- Lista de profesionales favoritos -->
+        <div class="list-group" id="listaProfesionales">
+          <label class="list-group-item">
+            <input class="form-check-input me-2" type="checkbox" value="1">
+            Carlos López – Electricista
+          </label>
+          <label class="list-group-item">
+            <input class="form-check-input me-2" type="checkbox" value="3">
+            Martín Díaz – Carpintero
+          </label>
+          <label class="list-group-item">
+            <input class="form-check-input me-2" type="checkbox" value="4">
+            Lucía Fernández – Barbera
+          </label>
+          <label class="list-group-item">
+            <input class="form-check-input me-2" type="checkbox" value="5">
+            Pedro Gómez – Electricista
+          </label>
+        </div>
       </div>
 
       <!-- Botones -->
@@ -81,40 +97,10 @@
     </form>
   </section>
 
-  <!-- MODAL AVISO VISITANTE -->
-  <div class="modal fade" id="modalAviso" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content text-center">
-        <div class="modal-header">
-          <h5 class="modal-title">Acceso restringido</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body">
-          <p>Registrate o iniciá sesión para crear solicitudes.</p>
-          <button class="btn btn-primary me-2" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#modalLogin">Iniciar sesión</button>
-          <button class="btn btn-secondary" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#modalRegistro">Registrarse</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      let isLogged = false; // Cambiar a true si el usuario inició sesión
 
-      const form = document.getElementById("formSolicitud");
-      form.addEventListener("submit", (e) => {
-        if (!isLogged) {
-          e.preventDefault();
-          const modalAviso = new bootstrap.Modal(document.getElementById("modalAviso"));
-          modalAviso.show();
-        } else {
-          alert("Solicitud enviada correctamente ✅");
-        }
-      });
-    });
-  </script>
+  <!-- JS propio -->
+  <script src="nueva_solicitud.js"></script>
 </body>
 </html>
