@@ -1,0 +1,24 @@
+/* ====== CLIENTE CSS ====== */
+
+/* Ajuste general del body */
+body {
+  background-color: #f8f9fa; /* gris claro */
+}
+
+/* Contenedor de lista de profesionales en el formulario */
+#listaProfesionales {
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #dee2e6;
+  border-radius: 0.375rem;
+}
+
+/* Espaciado en la sección principal */
+section {
+  margin-bottom: 3rem;
+}
+
+/* Banner final */
+.banner-final {
+  background-color: #212529; /* mismo dark que navbar */
+}
