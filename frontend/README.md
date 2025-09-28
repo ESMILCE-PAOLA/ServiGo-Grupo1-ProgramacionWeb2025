@@ -3,57 +3,76 @@
 Este directorio contiene las **vistas del sistema ServiGo**, organizadas por **rol**.  
 Cada carpeta incluye las pantallas principales en formato **HTML**, con soporte en **CSS** y **JavaScript**.
 
----
-
-## 📂 Estructura
-
-```
+## Estructura actual
 frontend/
-│── css/                  # Estilos compartidos
-│    └── estilo.css
 │
-│── js/                   # Lógica compartida
-│    └── script.js
+├── visitante/ # Pantallas para usuarios NO registrados
+│ ├── index.html # Página de inicio con buscador y login/registro en modal
+│ ├── estilo.css
+│ └── script.js
+│ 📌 Falta agregar:
+│ - iniciar_sesion.html
+│ - registrarse.html
+│ - recuperar_contraseña.html
 │
-├── visitante/            # Pantallas del visitante (usuario no registrado)
-│    └── index.html       # Pantalla de inicio con buscador y login/registro
+├── cliente/ # Pantallas para usuarios registrados (clientes)
+│ ├── index.html
+│ ├── perfil.html # Perfil cliente (vacío, falta completar)
+│ ├── nueva_solicitud.html
+│ ├── solicitud_cliente.html
+│ ├── chat_solicitud.html
+│ ├── cliente.css
+│ └── cliente.js
+│ 📌 Falta agregar:
+│ - formulario_editar_perfil.html
+│ - vista_comparar_presupuestos.html
 │
-├── cliente/              # Pantallas del cliente (usuario registrado)
-│    └── crear_solicitud_cliente.html   # Formulario para crear solicitudes
+├── profesional/ # Pantallas para profesionales
+│ ├── index.html
+│ ├── perfil_profesional.html
+│ ├── crear_presupuesto.html
+│ ├── detalle_solicitud.html
+│ ├── solicitudes-profesional.html
+│ ├── estilos.css
+│ ├── script.js
+│ └── script_solicitudes.js
+│ 📌 Falta agregar:
+│ - formulario_editar_perfil.html
 │
-├── profesional/          # Pantallas del profesional
-│    ├── perfil_profesional.html        # Perfil con datos y trabajos
-│    └── solicitudes-profesional.html   # Listado de solicitudes recibidas
+├── administrador/ # Pantallas para administradores
+│ ├── DashboardAdministrador.html
+│ ├── PerfilAdministrador.html
+│ ├── GestionUsuarios.html
+│ ├── GestionDenuncias.html
+│ ├── usuarios-bloqueados.html
+│ ├── script.js
+│ └── imagenes/
+│ 📌 Faltan:
+│ - formulario_editar_perfil.html
+│ - vista_ver_denuncia.html (modal para comentario/chat/perfil denunciado)
 │
-├── administrador/        # Pantallas del administrador
-│    └── (pendiente)      # Panel de gestión (usuarios, denuncias, etc.)
+├── css/
+│ └── estilo.css # Estilos compartidos
 │
-└── comunes/              # Vistas comunes a cliente y profesional
-     └── chat.html        # Chat privado vinculado a una solicitud
-```
+├── js/
+│ └── script.js # Lógica compartida
+│
+└── README.md # Este archivo
 
----
+##  Pendientes para la entrega
 
-##  Cómo probar en local
-1. Copiar el proyecto dentro de la carpeta **`htdocs`** de XAMPP.  
-   Ejemplo:  
-   ```
-   C:\xampp\htdocs\ServiGo\frontend
-   ```
-2. Iniciar Apache en XAMPP.  
-3. Abrir en el navegador la vista deseada, por ejemplo:  
-   - Visitante: [http://localhost/ServiGo/frontend/visitante/index.html](http://localhost/ServiGo/frontend/visitante/index.html)  
-   - Cliente: [http://localhost/ServiGo/frontend/cliente/crear_solicitud_cliente.html](http://localhost/ServiGo/frontend/cliente/crear_solicitud_cliente.html)  
-   - Profesional: [http://localhost/ServiGo/frontend/profesional/perfil_profesional.html](http://localhost/ServiGo/frontend/profesional/perfil_profesional.html)  
-   - Chat: [http://localhost/ServiGo/frontend/comunes/chat.html](http://localhost/ServiGo/frontend/comunes/chat.html)  
+1. **Visitante:**  
+   - Vistas de inicio de sesión, registro y recuperar contraseña.
 
----
+2. **Cliente:**  
+   - Completar el perfil.  
+   - Agregar formulario para edición de perfil.  
+   - Vista para comparar presupuestos de una misma solicitud.  
+   - Ajustar solicitud para seleccionar y reenviar a favoritos.
 
-## 👥 Notas
-- El **chat** siempre está vinculado a una **solicitud**: solo cliente y profesional involucrados pueden verlo.  
-- Las vistas actuales son **prototipos**: sirven como base para continuar con la integración a PHP y base de datos.  
-- El **administrador** aún no tiene vistas definidas.  
+3. **Profesional:**  
+   - Formulario para editar perfil.
 
----
-
- *Este README es una guía rápida para el equipo de frontend.*
+4. **Administrador:**  
+   - Vista para mostrar lo denunciado (comentario, chat o perfil) con modal.  
+   - Posibilidad de ocultar comentarios ofensivos.
