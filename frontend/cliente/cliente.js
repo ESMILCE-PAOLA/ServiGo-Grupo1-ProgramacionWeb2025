@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log("Cliente → Index");
 
     const profesionales = [
+      { id: 1, nombre: "Carlos López", rubro: "Electricista", localidad: "González Catán", activo: true, puntuacion: 4.8, foto: "imagenes/electricista_perfil.jpg" },
       { id: 1, nombre: "Carlos López", rubro: "Electricista", localidad: "González Catán", activo: true, puntuacion: 4.8, foto: "https://picsum.photos/seed/pro1/600/400" },
       { id: 2, nombre: "Ana Torres", rubro: "Plomera", localidad: "La Matanza", activo: true, puntuacion: 4.6, foto: "https://picsum.photos/seed/pro2/600/400" },
       { id: 3, nombre: "Martín Díaz", rubro: "Carpintero", localidad: "Morón", activo: true, puntuacion: 4.9, foto: "https://picsum.photos/seed/pro3/600/400" },
@@ -209,27 +210,4 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("telefonoCliente").textContent = perfil.telefono;
   }
 
-  // ================= CHAT =================
-  if (path.includes("chat_solicitud.html")) {
-    console.log("Cliente → Chat");
-
-    const chatBox = document.getElementById("chatBox");
-    const mensajes = [
-      { autor: "Profesional", texto: "Hola, vi tu solicitud. ¿Podés darme más detalles?" },
-      { autor: "Cliente", texto: "Sí, es un problema con la instalación eléctrica en la cocina." }
-    ];
-
-    function renderChat() {
-      chatBox.innerHTML = "";
-      mensajes.forEach(m => {
-        chatBox.innerHTML += `
-          <div class="mb-2">
-            <strong>${m.autor}:</strong> ${m.texto}
-          </div>
-        `;
-      });
-    }
-
-    renderChat();
-  }
 });
