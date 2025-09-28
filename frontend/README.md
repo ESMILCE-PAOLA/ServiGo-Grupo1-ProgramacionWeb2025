@@ -4,60 +4,71 @@ Este directorio contiene las **vistas del sistema ServiGo**, organizadas por **r
 Cada carpeta incluye las pantallas principales en formato **HTML**, con soporte en **CSS** y **JavaScript**.
 
 ## Estructura actual
-frontend/
-│
-├── visitante/ # Pantallas para usuarios NO registrados
-│ ├── index.html # Página de inicio con buscador y login/registro en modal
-│ ├── estilo.css
-│ └── script.js
-│ 📌 Falta agregar:
-│ - iniciar_sesion.html
-│ - registrarse.html
-│ - recuperar_contraseña.html
-│
-├── cliente/ # Pantallas para usuarios registrados (clientes)
-│ ├── index.html
-│ ├── perfil.html # Perfil cliente (vacío, falta completar)
-│ ├── nueva_solicitud.html
-│ ├── solicitud_cliente.html
-│ ├── chat_solicitud.html
-│ ├── cliente.css
-│ └── cliente.js
-│ 📌 Falta agregar:
-│ - formulario_editar_perfil.html
-│ - vista_comparar_presupuestos.html
-│
-├── profesional/ # Pantallas para profesionales
-│ ├── index.html
-│ ├── perfil_profesional.html
-│ ├── crear_presupuesto.html
-│ ├── detalle_solicitud.html
-│ ├── solicitudes-profesional.html
-│ ├── estilos.css
-│ ├── script.js
-│ └── script_solicitudes.js
-│ 📌 Falta agregar:
-│ - formulario_editar_perfil.html
-│
-├── administrador/ # Pantallas para administradores
-│ ├── DashboardAdministrador.html
-│ ├── PerfilAdministrador.html
-│ ├── GestionUsuarios.html
-│ ├── GestionDenuncias.html
-│ ├── usuarios-bloqueados.html
-│ ├── script.js
-│ └── imagenes/
-│ 📌 Faltan:
-│ - formulario_editar_perfil.html
-│ - vista_ver_denuncia.html (modal para comentario/chat/perfil denunciado)
-│
-├── css/
-│ └── estilo.css # Estilos compartidos
-│
-├── js/
-│ └── script.js # Lógica compartida
-│
-└── README.md # Este archivo
+## 📋 Descripción por módulo
+
+### 👤 Visitante
+- **index.html** → Página principal para usuarios no registrados.
+  - Puede visualizar profesionales destacados.
+  - Al intentar ver más detalles o contactar, se solicita iniciar sesión.
+
+### 🧑‍💼 Cliente
+- **index.html** → Catálogo de profesionales filtrable (servicio, localidad, orden).
+- **nueva_solicitud.html** → Formulario para enviar una solicitud a un profesional.
+- **solicitud_cliente.html** → Listado de solicitudes enviadas por el cliente.
+  - Incluye estados: Pendiente, En curso, Finalizado.
+  - Acceso a chat de la solicitud.
+  - Posibilidad de calificar al finalizar.
+- **perfil.html** → Visualización de datos del cliente.
+
+### 🛠 Profesional
+- **index.html** → Vista inicial del profesional con acceso a su perfil y solicitudes.
+- **solicitudes-profesional.html** →  
+  - Listado de solicitudes recibidas (tabla).  
+  - Filtros: rango de fechas, localidad (lista desplegable), estado.  
+  - Acción “Ver mensaje” redirige a `detalle_solicitud.html`.  
+- **detalle_solicitud.html** →  
+  - Visualiza el mensaje del cliente.  
+  - Acciones: Aceptar, Rechazar, Crear presupuesto.  
+- **crear_presupuesto.html** →  
+  - Formulario dinámico para armar un presupuesto.  
+  - Permite agregar/eliminar filas y calcular subtotales y total.  
+  - Envío simulado con modal de confirmación.  
+- **perfil_profesional.html** →  
+  - Perfil del profesional.  
+  - El bloque **Acciones de administrador** (Bloquear/Desbloquear) se muestra **solo si la vista se abre desde rol Administrador**.  
+  - El profesional no puede bloquearse a sí mismo.
+
+### 🛡 Administrador
+- **index.html** → Panel de inicio con accesos a todas las gestiones.  
+- **denuncias.html** → Administración de denuncias realizadas por clientes.  
+- **categorias.html** → Gestión de categorías de profesionales.  
+- **perfil_profesional.html** (cuando se navega hacia un profesional) →  
+  - Acciones de **Bloquear/Desbloquear usuario** con modal de confirmación.
+http://localhost/ServiGo-Grupo1-ProgramacionWeb2025/frontend/visitante/index.html
+---
+4. Desde ahí se puede navegar según el rol:  
+- `frontend/cliente/index.html`  
+- `frontend/profesional/index.html`  
+- `frontend/administrador/index.html`  
+
+---
+
+## 📝 Notas
+
+- Los datos actuales son **hardcodeados en cada `script.js`**.  
+- No existe todavía conexión con Base de Datos ni Backend.  
+- Mejoras recientes:  
+- Unificación de scripts en **Profesional** (todo en `script.js`).  
+- **Solicitudes Recibidas** con filtros por rango de fechas, estado y localidad (lista desplegable).  
+- Corrección de datos de prueba: se usan localidades reales (González Catán, San Justo, Morón, etc.).  
+- Acciones de **bloquear/desbloquear** visibles solo para Administrador.  
+
+## 🚀 Instrucciones para correrlo en XAMPP
+
+1. Copiar la carpeta `ServiGo-Grupo1-ProgramacionWeb2025` dentro de:  C:\xampp\htdocs\
+2. Iniciar **Apache** desde el panel de XAMPP.
+
+3. Abrir el navegador y acceder a: 
 
 ##  Pendientes para la entrega
 
