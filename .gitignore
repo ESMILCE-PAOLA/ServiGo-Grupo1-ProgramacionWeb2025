@@ -1,0 +1,41 @@
+# ===============================
+# ARCHIVOS DEL SISTEMA
+# ===============================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ===============================
+# CONFIGURACIÓN DE IDEs
+# ===============================
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# ===============================
+# ARCHIVOS TEMPORALES / CACHÉ
+# ===============================
+*.log
+*.tmp
+*.cache
+*.bak
+*.zip
+*.rar
+*.7z
+
+# ===============================
+# ARCHIVOS DE DESARROLLO
+# ===============================
+/database/*.sql
+/_imported_original/
+/ServiGo_structurado_*/
+/ServiGo_estructura_base_*.zip
+
+# ===============================
+# PHP / SERVIDOR LOCAL
+# ===============================
+/uploads/
+/vendor/
+/.env
+
