@@ -1,0 +1,10 @@
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /ServiGo-Grupo1-ProgramacionWeb2025/
+# Evitar reescritura de archivos/directorios reales
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+# Enrutar a index.php si no existe recurso
+RewriteRule ^ index.php [L]
+</IfModule>
