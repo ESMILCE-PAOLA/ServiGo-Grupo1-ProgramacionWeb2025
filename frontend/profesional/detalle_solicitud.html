@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Detalle Solicitud – ServiGo</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+  <!-- CSS propio -->
+  <link href="estilo.css" rel="stylesheet">
+    <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- JS propio -->
+  <script src="script_solicitudes.js" defer></script>
+</head>
+<body class="bg-light">
+
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="#">⚡ ServiGo</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navProfesional">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navProfesional">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link" href="solicitudes-profesional.html">Solicitudes</a></li>
+          <li class="nav-item"><a class="nav-link" href="perfil_profesional.html">Perfil</a></li>
+          <li class="nav-item"><a class="nav-link text-danger" href="../visitante/index.html">Cerrar sesión</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- CONTENIDO -->
+  <div class="container py-4">
+    <!-- Encabezado solicitud -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h3><i class="bi bi-file-earmark-text"></i> Solicitud #101</h3>
+      <span class="badge bg-success">respondida</span>
+    </div>
+
+    <div class="card shadow-sm p-3 mb-4">
+      <p><strong>Cliente:</strong> María González</p>
+      <p><strong>Localidad:</strong> González Catán</p>
+      <p><strong>Servicio:</strong> Electricidad</p>
+      <p><strong>Detalle:</strong> Arreglo de instalación eléctrica en la cocina</p>
+      <p><strong>Fecha:</strong> 2025-09-25</p>
+    </div>
+
+    <!-- Archivos -->
+    <div class="card shadow-sm p-3 mb-4">
+      <h5><i class="bi bi-paperclip"></i> Archivos</h5>
+      <ul class="list-unstyled">
+        <li><a href="#" class="text-decoration-none"><i class="bi bi-file-earmark"></i> Ver formulario del cliente</a></li>
+        <li><a href="#" class="text-decoration-none"><i class="bi bi-file-earmark-check"></i> Ver presupuesto enviado (profesional)</a></li>
+      </ul>
+    </div>
+
+    <!-- Chat -->
+    <div class="card shadow-sm p-3 mb-4">
+      <h5><i class="bi bi-chat-dots"></i> Chat</h5>
+      <div class="chat-box border rounded p-3 mb-3" style="height:250px; overflow-y:auto; background:#f9f9f9;">
+        <!-- Mensajes simulados -->
+        <div class="mb-2"><strong>Cliente:</strong> Hola, necesito un arreglo en mi cocina.</div>
+        <div class="mb-2 text-end"><strong>Profesional:</strong> Perfecto, ¿puede enviarme una foto?</div>
+        <div class="mb-2"><strong>Cliente:</strong> <i class="bi bi-paperclip"></i> <a href="#">foto_cocina.jpg</a></div>
+      </div>
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="Escribe un mensaje...">
+        <button class="btn btn-primary"><i class="bi bi-send"></i></button>
+      </div>
+    </div>
+
+    <!-- Acciones -->
+    <div class="d-flex justify-content-between">
+      <div>
+        <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#modalDenuncia">
+          <i class="bi bi-flag"></i> Denunciar
+        </button>
+      </div>
+      <div class="d-flex gap-2">
+        <a href="crear_presupuesto.html" class="btn btn-primary"><i class="bi bi-plus-circle"></i> Crear Presupuesto</a>
+        <button class="btn btn-success"><i class="bi bi-check-circle"></i> Aceptar</button>
+        <button class="btn btn-danger"><i class="bi bi-x-circle"></i> Rechazar</button>
+        <a href="solicitudes-profesional.html" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> Volver</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Denuncia -->
+  <div class="modal fade" id="modalDenuncia" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-flag"></i> Denunciar</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label class="form-label">Motivo</label>
+              <select class="form-select">
+                <option>Posible estafa</option>
+                <option>Contenido inapropiado</option>
+                <option>Spam</option>
+                <option>Otro</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Comentario adicional</label>
+              <textarea class="form-control" rows="3"></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button class="btn btn-danger">Enviar denuncia</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ServiGo – Profesional</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="estilo.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="script_solicitudes.js" defer></script>
+  <script src="script.js" defer></script>
+  
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="#">⚡ ServiGo</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navMain">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link active" href="index.html">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link" href="perfil_profesional.html">Mi Perfil</a></li>
+          <li class="nav-item"><a class="nav-link" href="solicitudes-profesional.html">Solicitudes</a></li>
+          <li class="nav-item"><a class="nav-link text-danger" href="../visitante/index.html">Cerrar sesión</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero text-white text-center bg-primary">
+    <div class="container py-5">
+      <h1 class="display-5 fw-bold">¡Impulsá tu presencia como profesional!</h1>
+      <p class="lead mb-4">Mantené tu perfil siempre actualizado, respondé rápido y brindá el mejor servicio.  
+        Así tus clientes te puntúan mejor y aparecés entre los profesionales destacados.</p>
+    </div>
+  </header>
+
+  <!-- LISTADO PROFESIONALES DESTACADOS -->
+  <section class="container my-5">
+    <h2 class="text-center mb-4">Profesionales destacados</h2>
+    <p class="text-center text-muted">Estos son los colegas mejor valorados. ¡Vos también podés estar acá!</p>
+    <div class="row g-4" id="gridProfesionales">
+      <!-- Las cards se generan con JS -->
+    </div>
+  </section>
+
+  <!-- BANNER FINAL -->
+  <section class="banner-final text-white text-center py-5 mt-5 bg-dark">
+    <div class="container">
+      <h2 class="fw-bold">Un mundo de servicios te espera</h2>
+      <p class="lead mb-4">Atendé solicitudes, hacé crecer tu reputación y destacate en ServiGo</p>
+    </div>
+  </section>
+
+  <!-- MODAL Aviso -->
+  <div class="modal fade" id="modalAviso" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Acceso restringido</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          Para ver perfiles completos debés ingresar como <strong>Cliente</strong>.  
+          Actualmente estás en tu cuenta de <strong>Profesional</strong>.
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-bs-dismiss="modal">Entendido</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
