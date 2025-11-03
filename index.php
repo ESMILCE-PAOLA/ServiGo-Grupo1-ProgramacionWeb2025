@@ -5,17 +5,17 @@
     <div class="card">
       <h2>Cliente</h2>
       <p>Publicá solicitudes, recibí presupuestos y chateá con profesionales.</p>
-      <a class="btn primary" href="/ServiGo/views/cliente/dashboard.php">Entrar</a>
+      <a class="btn primary" href="/ServiGo/ServiGo-Grupo1-ProgramacionWeb2025/views/cliente/dashboard.php">Entrar</a>
     </div>
     <div class="card">
       <h2>Profesional</h2>
       <p>Respondé solicitudes cercanas, enviá presupuestos y gestioná tu reputación.</p>
-      <a class="btn primary" href="/ServiGo/views/profesional/dashboard.php">Entrar</a>
+      <a class="btn primary" href="/Servi/GoServiGo-Grupo1-ProgramacionWeb2025/views/profesional/index.php">Entrar</a>
     </div>
     <div class="card">
       <h2>Administrador</h2>
       <p>Gestioná usuarios, moderación y métricas del sistema.</p>
-      <a class="btn primary" href="/ServiGo/views/administrador/dashboard.php">Entrar</a>
+      <a class="btn primary" href="/ServiGo/ServiGo-Grupo1-ProgramacionWeb2025/views/administrador/dashboard.php">Entrar</a>
     </div>
   </div>
 </main>

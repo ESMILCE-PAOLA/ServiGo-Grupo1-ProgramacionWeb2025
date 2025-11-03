@@ -5,13 +5,6 @@ $active = 'inicio';
 <?php include_once __DIR__ . '/../../includes/header.php'; ?>
 <?php include_once __DIR__ . '/../../includes/navbar.php'; ?>
 
-<link rel="stylesheet" href="/ServiGo/assets/css/profesional.css">
-<?php
-require_once __DIR__ . '/../../includes/guard_profesional.php';
-$active = 'inicio';
-include_once __DIR__ . '/../../includes/header.php';
-include_once __DIR__ . '/../../includes/navbar.php';
-?>
 
 <main class="text-light">
 

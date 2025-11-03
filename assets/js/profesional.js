@@ -13,7 +13,7 @@ async function cargarSolicitudes() {
   cuerpo.innerHTML = '<tr><td colspan="7" class="text-center text-secondary py-3">Cargando...</td></tr>';
 
   try {
-    const r = await fetch('/ServiGo-Grupo1-ProgramacionWeb2025/backend/api/usuarios/profesional/listar_solicitudes.php');
+    const r = await fetch('/ServiGo/ServiGo-Grupo1-ProgramacionWeb2025/backend/api/usuarios/profesional/listar_solicitudes.php');
     const j = await r.json();
 
     if (!j.success || !j.data.length) {
@@ -33,7 +33,7 @@ async function cargarSolicitudes() {
         <td>${new Date(s.created_at).toLocaleDateString('es-AR')}</td>
         <td>${estadoBadge(s.estado)}</td>
         <td>
-          <a href="/ServiGo-Grupo1-ProgramacionWeb2025/views/profesional/detalle-solicitud.php?id=${s.id}" 
+          <a href="/ServiGo/ServiGo-Grupo1-ProgramacionWeb2025/views/profesional/detalle-solicitud.php?id=${s.id}" 
              class="btn btn-sm btn-info text-dark">
              <i class="bi bi-chat-left-text"></i> Ver mensaje
           </a>
@@ -52,5 +52,7 @@ function estadoBadge(estado) {
   if (estado === 'Pendiente') return '<span class="badge bg-warning text-dark">Pendiente</span>';
   if (estado === 'Aceptada') return '<span class="badge bg-success">Aceptada</span>';
   if (estado === 'Rechazada') return '<span class="badge bg-danger">Rechazada</span>';
+  if (estado === 'cancelado') return '<span class="badge bg-danger">Rechazada</span>';cancelado
+
   return `<span class="badge bg-secondary">${estado}</span>`;
 }
