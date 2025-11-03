@@ -1,11 +1,13 @@
 <?php
+define('BASE_URL', 'http://localhost/ServiGo/ServiGo-Grupo1-ProgramacionWeb2025');
+
 return [
   'db' => [
     'host' => 'localhost',
-    'port' => '3306',
+    'port' => 3306,
     'name' => 'servigo',
     'user' => 'root',
     'pass' => '',
     'charset' => 'utf8mb4',
-  ]
+  ],
 ];

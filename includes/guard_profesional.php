@@ -1,8 +1,8 @@
 <?php
 require_once __DIR__ . '/session.php';
+require_once __DIR__ . '/auth.php';
 
-$rol = $_SESSION['user']['rol_slug'] ?? $_SESSION['user']['rol'] ?? 'visitante';
-if ($rol !== 'profesional') {
-  header('Location: /ServiGo/views/visitante/index.php');
+if (!isRole('profesional')) {
+  header('Location: ' . BASE_URL . '/views/visitante/index.php');
   exit;
 }
