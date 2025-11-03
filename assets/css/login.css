@@ -1,0 +1,187 @@
+/* Fondo general con degradado */
+body {
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0f172a 100%);
+  color: #f8fafc; /* Texto claro */
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  min-height: 100vh;
+}
+
+/* Contenedor del botón */
+.boton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+}
+
+/* Botones principales */
+.iniciar-sesion,
+.recup-contraseña {
+  background-color: #1e3a8a; /* Azul profundo */
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 1.1rem;
+  padding: 10px;
+  width: 300px;
+  border: none;
+  border-radius: 6px;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.iniciar-sesion:hover,
+.recup-contraseña:hover {
+  background-color: #ffffff;
+  color: #1e3a8a;
+  border: 2px solid #1e3a8a;
+  box-shadow: 0 4px 12px rgba(30, 58, 138, 0.4);
+}
+
+/* Enlaces */
+.enlace {
+  color: #c7d2fe; /* Azul suave */
+  padding: 5px;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: all 0.3s ease-in-out;
+}
+
+.enlace:hover {
+  color: #ffffff;
+  border-bottom: 2px solid #ffffff;
+}
+
+/* Tarjeta de login */
+#CardLogin {
+  margin-top: 40px;
+  background-color: #ffffff; /* Fondo blanco de la tarjeta */
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+}
+
+/* Inputs */
+input.form-control {
+  background-color: #f8fafc; /* Gris muy claro */
+  border: 1px solid #cbd5e1;
+  border-radius: 5px;
+  transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+input.form-control:focus {
+  border-color: #1e3a8a;
+  box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.2);
+}
+
+/* Alertas de error */
+.text-danger {
+  font-size: 0.9rem;
+  color: #dc2626;
+}
+
+/* ===== MODAL GENERAL ===== */
+.modal-content {
+  background: linear-gradient(145deg, #f8f9fa, #e3e8ee);
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  animation: fadeInModal 0.3s ease-in-out;
+}
+
+/* Título */
+.modal-header {
+  background-color: #0d1b2a;
+  color: #ffffff;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  border-bottom: 2px solid #00aaff;
+}
+
+.modal-title {
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+.btn-close {
+  filter: invert(1);
+  opacity: 0.8;
+}
+.btn-close:hover {
+  opacity: 1;
+}
+
+/* Cuerpo del modal */
+.modal-body {
+  padding: 25px 30px;
+}
+
+.modal-body label {
+  font-weight: 500;
+  color: #1b263b;
+}
+
+#email-recup {
+  border: 1px solid #b0b9c6;
+  border-radius: 8px;
+  padding: 8px 10px;
+  transition: border-color 0.3s ease;
+}
+
+#email-recup:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.4);
+  outline: none;
+}
+
+/* Footer del modal */
+.modal-footer {
+  border-top: none;
+  padding: 15px 25px;
+  justify-content: space-between;
+}
+
+/* Botones */
+.recup-contraseña {
+  background-color: #007bff;
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 15px;
+  transition: all 0.3s ease;
+}
+
+.recup-contraseña:hover {
+  background-color: #0056b3;
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background-color: #545b62;
+}
+
+/* Fondo oscuro del modal */
+.modal-backdrop.show {
+  opacity: 0.7;
+  background-color: rgba(13, 27, 42, 0.8);
+}
+
+/* Animación de entrada */
+@keyframes fadeInModal {
+  from {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

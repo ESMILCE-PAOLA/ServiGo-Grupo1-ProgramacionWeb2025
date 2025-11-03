@@ -1,6 +1,12 @@
 <!-- includes/footer.php -->
 <footer class="text-center py-3 bg-dark text-light mt-4">
-  <p class="mb-0">&copy; ServiGo 2025 – Todos los derechos reservados.</p>
+  
+    <div class="footer-section">
+      <h6>Contacto</h6>
+      <p>Email: contacto@servigo.com</p>
+      <p>Tel: +54 9 11 5555 5555</p>
+    </div>
+<p class="mb-0">&copy; ServiGo 2025 – Todos los derechos reservados.</p>
 </footer>
 
 <!-- JS Bootstrap -->
