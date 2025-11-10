@@ -1,101 +1,89 @@
 <?php
 require_once __DIR__ . '/../../includes/guard_profesional.php';
-$active = 'inicio';
-?>
-<?php include_once __DIR__ . '/../../includes/header.php'; ?>
-<?php include_once __DIR__ . '/../../includes/navbar.php'; ?>
-
-<link rel="stylesheet" href="/ServiGo/assets/css/profesional.css">
-<?php
-require_once __DIR__ . '/../../includes/guard_profesional.php';
-$active = 'inicio';
+$active = 'solicitudes';
 include_once __DIR__ . '/../../includes/header.php';
 include_once __DIR__ . '/../../includes/navbar.php';
 ?>
 
+<link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/profesional.css">
+
 <main class="text-light">
+  <div class="container py-4">
+    <h2 class="mb-4 fw-semibold text-dark">Solicitudes Recibidas</h2>
 
-<div class="container py-4">
-  <h2 class="mb-4 fw-semibold text-dark">Solicitudes Recibidas</h2>
+    <!-- FILTROS -->
+    <form id="formFiltros" class="row g-3 mb-4 align-items-end">
+      <div class="col-md-2">
+        <label class="form-label">Desde</label>
+        <input type="date" id="fechaDesde" class="form-control">
+      </div>
 
-  <!-- FILTROS -->
-  <form id="formFiltros" class="row g-3 mb-4">
-    <div class="col-md-3">
-      <label class="form-label">Desde</label>
-      <input type="date" id="fechaDesde" class="form-control">
-    </div>
-    <div class="col-md-3">
-      <label class="form-label">Hasta</label>
-      <input type="date" id="fechaHasta" class="form-control">
-    </div>
-    <div class="col-md-3">
-      <label class="form-label">Localidad</label>
-      <select id="filtroLocalidad" class="form-select">
-        <option value="">Todas</option>
-      </select>
-    </div>
-    <div class="col-md-3">
-      <label class="form-label">Estado</label>
-      <select id="filtroEstado" class="form-select">
-        <option value="">Todos</option>
-        <option value="Pendiente">Pendiente</option>
-        <option value="Aceptada">Aceptada</option>
-        <option value="Rechazada">Rechazada</option>
-      </select>
-    </div>
-    <div class="col-12 text-end">
-      <button type="submit" class="btn btn-primary">
-        <i class="bi bi-funnel"></i> Buscar
-      </button>
-    </div>
-  </form>
+      <div class="col-md-2">
+        <label class="form-label">Hasta</label>
+        <input type="date" id="fechaHasta" class="form-control">
+      </div>
 
-  <!-- TABLA -->
-  <div class="table-responsive">
-    <table class="table align-middle">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Cliente</th>
-          <th>Detalle</th>
-          <th>Localidad</th>
-          <th>Fecha</th>
-          <th>Estado</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody id="tablaSolicitudes">
-        <!-- Contenido generado dinámicamente -->
-        <tr>
-          <td>101</td>
-          <td>María González</td>
-          <td>Instalación eléctrica cocina</td>
-          <td>González Catán</td>
-          <td>2025-09-25</td>
-          <td><span class="estado pendiente">Pendiente</span></td>
-          <td><button class="btn-ver">Ver mensaje</button></td>
-        </tr>
-        <tr>
-          <td>102</td>
-          <td>Juan Pérez</td>
-          <td>Pérdida en cañería baño</td>
-          <td>San Justo</td>
-          <td>2025-09-26</td>
-          <td><span class="estado aceptada">Aceptada</span></td>
-          <td><button class="btn-ver">Ver mensaje</button></td>
-        </tr>
-        <tr>
-          <td>103</td>
-          <td>Sofía Arias</td>
-          <td>Carpintería: reparación de puerta</td>
-          <td>Morón</td>
-          <td>2025-09-27</td>
-          <td><span class="estado rechazada">Rechazada</span></td>
-          <td><button class="btn-ver">Ver mensaje</button></td>
-        </tr>
-      </tbody>
-    </table>
+      <div class="col-md-2">
+        <label class="form-label">Localidad</label>
+        <select id="filtroLocalidad" class="form-select">
+          <option value="">Todas</option>
+        </select>
+      </div>
+
+      <div class="col-md-2">
+        <label class="form-label">Estado (Profesional)</label>
+        <select id="filtroEstado" class="form-select">
+          <option value="">Todos</option>
+          <option value="pendiente">Pendiente</option>
+          <option value="aceptada">Aceptada</option>
+          <option value="rechazada">Rechazada</option>
+        </select>
+      </div>
+
+      <div class="col-md-3">
+        <label class="form-label">Etapa (Proceso)</label>
+        <select id="filtroEtapa" class="form-select">
+          <option value="">Todas</option>
+          <option value="pendiente">Pendiente</option>
+          <option value="presupuesto_enviado">Presupuesto enviado</option>
+          <option value="esperando_cliente">Esperando cliente</option>
+          <option value="en_progreso">En progreso</option>
+          <option value="finalizada">Finalizada</option>
+          <option value="cancelada">Cancelada</option>
+        </select>
+      </div>
+
+
+      <div class="col-md-2 text-end">
+        <button type="submit" class="btn btn-primary w-100">
+          <i class="bi bi-funnel"></i> Buscar
+        </button>
+      </div>
+    </form>
+
+    <!-- TABLA -->
+    <div class="table-responsive">
+      <table class="table align-middle table-hover text-center">
+        <thead class="table-dark">
+          <tr>
+            <th>ID</th>
+            <th>Cliente</th>
+            <th>Detalle</th>
+            <th>Localidad</th>
+            <th>Fecha</th>
+            <th>Estado</th>
+            <th>Etapa</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="tablaSolicitudes">
+          <!-- Se cargará dinámicamente -->
+        </tbody>
+      </table>
+    </div>
   </div>
-</div>
+</main>
+
+<script src="<?= BASE_URL ?>/assets/js/profesional/solicitudes.js" defer></script>
 
 <?php include_once __DIR__ . '/../../includes/footer.php'; ?>

@@ -1,3 +1,6 @@
+<?php
+require_once __DIR__ . '/config.php';
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -17,13 +20,14 @@
 
   <!-- ===== Scripts específicos según la vista ===== -->
   <?php if (isset($active)): ?>
-    <?php if ($active === 'solicitudes'): ?>
-      <script src="<?= BASE_URL ?>/assets/js/profesional.js" defer></script>
-    <?php elseif ($active === 'perfil'): ?>
-      <script src="<?= BASE_URL ?>/assets/js/perfil.js" defer></script>
-    <?php elseif ($active === 'cliente'): ?>
-      <script src="<?= BASE_URL ?>/assets/js/cliente.js" defer></script>
+    <?php if ($active == 'solicitudes'): ?>
+      <script src="<?= BASE_URL ?>/assets/js/profesional/solicitudes.js?v=<?= time() ?>" defer></script>
+    <?php elseif ($active == 'perfil'): ?>
+      <script src="<?= BASE_URL ?>/assets/js/profesional/perfil.js?v=<?= time() ?>" defer></script>
+    <?php elseif ($active == 'cliente'): ?>
+      <script src="<?= BASE_URL ?>/assets/js/cliente.js?v=<?= time() ?>" defer></script>
     <?php endif; ?>
+
   <?php endif; ?>
 </head>
 
