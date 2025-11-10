@@ -1,3 +1,6 @@
+<?php
+require_once __DIR__ . '/config.php';
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -9,18 +12,22 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- CSS Global -->
-  <link rel="stylesheet" href="/ServiGo-Grupo1-ProgramacionWeb2025/assets/css/style.css">
-  <link rel="icon" href="/ServiGo-Grupo1-ProgramacionWeb2025/assets/img/logo.png">
+  <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css">
+  <link rel="icon" href="<?= BASE_URL ?>/assets/img/logo.png">
+
+  <!-- 🔗 Variable global BASE_URL para JS -->
+  <script>window.BASE_URL = "<?= BASE_URL ?>";</script>
 
   <!-- ===== Scripts específicos según la vista ===== -->
   <?php if (isset($active)): ?>
-    <?php if ($active === 'solicitudes'): ?>
-      <script src="/ServiGo-Grupo1-ProgramacionWeb2025/assets/js/profesional.js" defer></script>
-    <?php elseif ($active === 'perfil'): ?>
-      <script src="/ServiGo-Grupo1-ProgramacionWeb2025/assets/js/perfil.js" defer></script>
-    <?php elseif ($active === 'cliente'): ?>
-      <script src="/ServiGo-Grupo1-ProgramacionWeb2025/assets/js/cliente.js" defer></script>
+    <?php if ($active == 'solicitudes'): ?>
+      <script src="<?= BASE_URL ?>/assets/js/profesional/solicitudes.js?v=<?= time() ?>" defer></script>
+    <?php elseif ($active == 'perfil'): ?>
+      <script src="<?= BASE_URL ?>/assets/js/profesional/perfil.js?v=<?= time() ?>" defer></script>
+    <?php elseif ($active == 'cliente'): ?>
+      <script src="<?= BASE_URL ?>/assets/js/cliente.js?v=<?= time() ?>" defer></script>
     <?php endif; ?>
+
   <?php endif; ?>
 </head>
 
