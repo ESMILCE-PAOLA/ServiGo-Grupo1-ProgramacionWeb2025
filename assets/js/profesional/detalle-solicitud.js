@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const btnCrearPresupuesto = document.getElementById("btnCrearPresupuesto");
 
   // ==============================
-  // CARGAR DETALLE DE SOLICITUD
+  // CARGAR DETALLE
   // ==============================
   async function cargarDetalle() {
     try {
@@ -61,16 +61,14 @@ document.addEventListener("DOMContentLoaded", async () => {
       fecha.textContent = d.created_at ?? "—";
       descripcion.textContent = d.descripcion ?? "—";
 
-      // ADJUNTOS
+      // Adjuntos
       if (d.adjuntos && d.adjuntos.length > 0) {
         bloqueAdjuntos.classList.remove("d-none");
         listaAdjuntos.innerHTML = d.adjuntos
           .map(a => `
             <li>
-              <a href="${window.BASE_URL}/assets/${a}"
-                 target="_blank"
-                 class="text-decoration-none text-primary">
-                 <i class="bi bi-paperclip"></i> ${a.split("/").pop()}
+              <a href="${window.BASE_URL}/assets/${a}" target="_blank" class="text-decoration-none text-primary">
+                <i class="bi bi-paperclip"></i> ${a.split("/").pop()}
               </a>
             </li>
           `)
@@ -79,16 +77,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         bloqueAdjuntos.classList.add("d-none");
       }
 
-      // Estado de la relación profesional–solicitud
+      // Estado de relación profesional
       const estadoRelacion = d.estado_relacion ?? "";
       console.log("[detalle-solicitud] estado_relacion:", estadoRelacion);
 
-      // Habilitar botón Crear Presupuesto solo si está ACEPTADA para este profesional
-      if (estadoRelacion === "aceptada") {
-        btnCrearPresupuesto.disabled = false;
-      } else {
-        btnCrearPresupuesto.disabled = true;
-      }
+      btnCrearPresupuesto.disabled = estadoRelacion !== "aceptada";
 
     } catch (err) {
       console.error("Error cargando detalle:", err);
@@ -126,6 +119,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         .join("");
 
       chatBox.scrollTop = chatBox.scrollHeight;
+
     } catch (err) {
       console.error("Error chat:", err);
       chatBox.innerHTML = `<p class="text-danger text-center">Error al cargar chat.</p>`;
@@ -162,6 +156,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         } else {
           mostrarModalError("No se pudo enviar el mensaje");
         }
+
       } catch (err) {
         console.error(err);
         mostrarModalError("Error al enviar mensaje");
@@ -170,7 +165,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   // ==============================
-  // CAMBIAR ESTADO (ACEPTAR / RECHAZAR)
+  // CAMBIAR ESTADO
   // ==============================
   async function cambiarEstado(estado) {
     try {
@@ -191,29 +186,30 @@ document.addEventListener("DOMContentLoaded", async () => {
         return;
       }
 
-      await cargarDetalle(); // refrescar datos
-      mostrarModalConfirmacion("Estado actualizado correctamente");
+      await cargarDetalle();
+      mostrarModalExito("Estado actualizado correctamente");
+
     } catch (err) {
       console.error(err);
       mostrarModalError("Error de servidor al actualizar el estado");
     }
   }
 
-  // BOTÓN ACEPTAR
+  // ==============================
+  // BOTONES
+  // ==============================
   if (btnAceptar) {
     btnAceptar.addEventListener("click", () => {
       mostrarModalConfirmacion("¿Aceptar esta solicitud?", () => cambiarEstado("aceptada"));
     });
   }
 
-  // BOTÓN RECHAZAR
   if (btnRechazar) {
     btnRechazar.addEventListener("click", () => {
       mostrarModalConfirmacion("¿Rechazar esta solicitud?", () => cambiarEstado("rechazada"));
     });
   }
 
-  // CREAR PRESUPUESTO
   if (btnCrearPresupuesto) {
     btnCrearPresupuesto.addEventListener("click", () => {
       window.location.href = `crear_presupuesto.php?id=${idSolicitud}`;
@@ -225,16 +221,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   // ==============================
   function mostrarModalConfirmacion(texto, onConfirmar = null) {
     const modalEl = document.getElementById("modalConfirmacion");
-    if (!modalEl) {
-      alert(texto); // fallback por si falta el modal
-      if (onConfirmar) onConfirmar();
-      return;
-    }
+    if (!modalEl) return alert(texto);
 
     const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
     modalEl.querySelector(".modal-body").textContent = texto;
 
-    modalEl.querySelector("#btnConfirmar").onclick = () => {
+    modalEl.querySelector("#btnConfirmarAccion").onclick = () => {
       modal.hide();
       if (onConfirmar) onConfirmar();
     };
@@ -244,10 +236,16 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   function mostrarModalError(texto) {
     const modalEl = document.getElementById("modalError");
-    if (!modalEl) {
-      alert(texto); // fallback
-      return;
-    }
+    if (!modalEl) return alert(texto);
+
+    const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+    modalEl.querySelector(".modal-body").textContent = texto;
+    modal.show();
+  }
+
+  function mostrarModalExito(texto) {
+    const modalEl = document.getElementById("modalExito");
+    if (!modalEl) return alert(texto);
 
     const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
     modalEl.querySelector(".modal-body").textContent = texto;

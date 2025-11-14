@@ -101,9 +101,9 @@ if (!$id) {
 
 <!-- ====== MODALES ====== -->
 <?php 
-  include_once __DIR__ . '/../../includes/modales/modal_confirmacion.php';
-  include_once __DIR__ . '/../../includes/modales/modal_error.php';
-  include_once __DIR__ . '/../../includes/modales/modal_denuncia.php';
+  include_once __DIR__ . '/../../includes/modales/modales_generales.php';
+  include_once __DIR__ . '/../../includes/modales/modal_denuncia.php'; 
+
 ?>
 
 <?php include_once __DIR__ . '/../../includes/footer.php'; ?>
