@@ -1,60 +1,85 @@
-<?php
+<?php 
 require_once __DIR__ . '/../../../includes/db.php';
 require_once __DIR__ . '/../../../includes/session.php';
+
 header('Content-Type: application/json');
 
 try {
-  $solicitud_id = intval($_GET['solicitud_id'] ?? 0);
-  if ($solicitud_id <= 0) {
-    echo json_encode(['success' => false, 'error' => 'ID de solicitud inválido']);
-    exit;
-  }
 
-  // Buscar el chat asociado
-  $sqlChat = "SELECT id, cliente_id, profesional_id 
-              FROM chats 
-              WHERE solicitud_id = :solicitud_id 
-              LIMIT 1";
-  $stmtChat = $pdo->prepare($sqlChat);
-  $stmtChat->execute([':solicitud_id' => $solicitud_id]);
-  $chat = $stmtChat->fetch(PDO::FETCH_ASSOC);
+    $solicitud_id = intval($_GET['solicitud_id'] ?? 0);
 
-  if (!$chat) {
-    echo json_encode(['success' => true, 'data' => []]);
-    exit;
-  }
+    if ($solicitud_id <= 0) {
+        echo json_encode(['success' => false, 'error' => 'ID de solicitud inválido']);
+        exit;
+    }
 
-  $chat_id = $chat['id'];
-  $cliente_id = $chat['cliente_id'];
-  $profesional_id = $chat['profesional_id'];
+    // ============================
+    //  OBTENER CHAT
+    // ============================
+    $sqlChat = "SELECT id, cliente_id, profesional_id 
+                FROM chats 
+                WHERE solicitud_id = :solicitud_id 
+                LIMIT 1";
 
-  // Obtener mensajes
-// Obtener mensajes
-  $sqlMensajes = "SELECT 
-                    id,
-                    contenido AS mensaje,
-                    created_at,
-                    CASE 
-                      WHEN emisor_id = :cliente_id THEN 'cliente'
-                      WHEN emisor_id = :profesional_id THEN 'profesional'
-                      ELSE 'otro'
-                    END AS tipo
-                  FROM mensajes
-                  WHERE chat_id = :chat_id
-                  ORDER BY created_at ASC";
+    $stmtChat = $pdo->prepare($sqlChat);
+    $stmtChat->execute([':solicitud_id' => $solicitud_id]);
+    $chat = $stmtChat->fetch(PDO::FETCH_ASSOC);
 
-  $stmtMsg = $pdo->prepare($sqlMensajes);
-  $stmtMsg->execute([
-    ':chat_id' => $chat_id,
-    ':cliente_id' => $cliente_id,
-    ':profesional_id' => $profesional_id
-  ]);
+    if (!$chat) {
+        echo json_encode(['success' => true, 'data' => []]);
+        exit;
+    }
 
-  $mensajes = $stmtMsg->fetchAll(PDO::FETCH_ASSOC);
+    $chat_id = $chat['id'];
+    $cliente_id = $chat['cliente_id'];
+    $profesional_id = $chat['profesional_id'];
 
-  echo json_encode(['success' => true, 'data' => $mensajes]);
+    // ============================
+    //  OBTENER MENSAJES + NOMBRE
+    // ============================
+    $sqlMensajes = "SELECT 
+                      m.id,
+                      m.contenido AS mensaje,
+                      m.created_at,
+                      m.emisor_id,
+                      u.nombre AS nombre_usuario,
+                      CASE 
+                        WHEN m.emisor_id = :cliente_id THEN 'cliente'
+                        WHEN m.emisor_id = :profesional_id THEN 'profesional'
+                        ELSE 'otro'
+                      END AS tipo
+                    FROM mensajes m
+                    LEFT JOIN usuarios u ON u.id = m.emisor_id
+                    WHERE m.chat_id = :chat_id
+                    ORDER BY m.created_at ASC";
+
+    $stmtMsg = $pdo->prepare($sqlMensajes);
+    $stmtMsg->execute([
+        ':chat_id'       => $chat_id,
+        ':cliente_id'    => $cliente_id,
+        ':profesional_id'=> $profesional_id
+    ]);
+
+    $mensajesRaw = $stmtMsg->fetchAll(PDO::FETCH_ASSOC);
+
+    // ============================
+    // FORMATEAR RESPUESTA
+    // ============================
+    $mensajes = array_map(function($m) {
+        return [
+            'id'        => $m['id'],
+            'mensaje'   => $m['mensaje'],
+            'created_at'=> $m['created_at'],
+            'tipo'      => $m['tipo'],
+            'nombre'    => $m['nombre_usuario'] ?? 'Usuario'
+        ];
+    }, $mensajesRaw);
+
+    echo json_encode(['success' => true, 'data' => $mensajes]);
+
 
 } catch (Throwable $e) {
-  http_response_code(500);
-  echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+
+    http_response_code(500);
+    echo json_encode(['success' => false, 'error' => $e->getMessage()]);
 }

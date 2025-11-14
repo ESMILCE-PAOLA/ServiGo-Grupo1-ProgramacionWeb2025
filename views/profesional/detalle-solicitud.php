@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../../includes/guard_profesional.php';
+$active = 'detalle-solicitud';
 include_once __DIR__ . '/../../includes/header.php';
 include_once __DIR__ . '/../../includes/navbar.php';
 
@@ -20,9 +21,13 @@ if (!$id) {
     <h3 class="mb-0 fw-bold text-dark">
       Solicitud <span id="numeroSolicitud" class="text-secondary">#<?= htmlspecialchars($id) ?></span>
     </h3>
-    <button id="btnDenunciar" class="btn btn-outline-danger btn-sm">
+    <button id="btnDenunciar" 
+            class="btn btn-outline-danger btn-sm"
+            data-bs-toggle="modal"
+            data-bs-target="#modalDenuncia">
       <i class="bi bi-flag"></i> Denunciar
     </button>
+
   </div>
 
   <!-- ===================== -->
@@ -66,7 +71,11 @@ if (!$id) {
     <div class="card-footer bg-white border-top">
       <form id="formMensaje" class="d-flex">
         <input type="text" id="inputMensaje" class="form-control me-2" placeholder="Escriba un mensaje..." required>
-        <button class="btn btn-primary" type="submit"><i class="bi bi-send"></i></button>
+        <button class="btn btn-primary px-3" type="submit">
+            <i class="bi bi-send-fill"></i> Enviar
+        </button>
+
+
       </form>
     </div>
   </div>
@@ -75,9 +84,10 @@ if (!$id) {
   <!-- BOTONES DE ACCIÓN -->
   <!-- ===================== -->
   <div class="text-center mt-4">
-    <a href="crear-presupuesto.php?id=<?= htmlspecialchars($id) ?>" class="btn btn-primary me-2">
+    <button id="btnCrearPresupuesto" class="btn btn-primary me-2" disabled>
       <i class="bi bi-receipt"></i> Crear Presupuesto
-    </a>
+    </button>
+
     <button id="btnAceptar" class="btn btn-success me-2">
       <i class="bi bi-check-circle"></i> Aceptar
     </button>
@@ -88,8 +98,12 @@ if (!$id) {
       <i class="bi bi-arrow-left"></i> Volver
     </a>
   </div>
-</div>
 
-<script src="<?= BASE_URL ?>/assets/js/profesional/detalle-solicitud.js" defer></script>
+<!-- ====== MODALES ====== -->
+<?php 
+  include_once __DIR__ . '/../../includes/modales/modal_confirmacion.php';
+  include_once __DIR__ . '/../../includes/modales/modal_error.php';
+  include_once __DIR__ . '/../../includes/modales/modal_denuncia.php';
+?>
 
 <?php include_once __DIR__ . '/../../includes/footer.php'; ?>

@@ -13,6 +13,7 @@ include_once __DIR__ . '/../../includes/navbar.php';
 
     <!-- FILTROS -->
     <form id="formFiltros" class="row g-3 mb-4 align-items-end">
+
       <div class="col-md-2">
         <label class="form-label">Desde</label>
         <input type="date" id="fechaDesde" class="form-control">
@@ -26,6 +27,7 @@ include_once __DIR__ . '/../../includes/navbar.php';
       <div class="col-md-2">
         <label class="form-label">Localidad</label>
         <select id="filtroLocalidad" class="form-select">
+          <!-- Se llenará dinámicamente con JS -->
           <option value="">Todas</option>
         </select>
       </div>
@@ -33,26 +35,18 @@ include_once __DIR__ . '/../../includes/navbar.php';
       <div class="col-md-2">
         <label class="form-label">Estado (Profesional)</label>
         <select id="filtroEstado" class="form-select">
+          <!-- COMPLETAMENTE DINÁMICO -->
           <option value="">Todos</option>
-          <option value="pendiente">Pendiente</option>
-          <option value="aceptada">Aceptada</option>
-          <option value="rechazada">Rechazada</option>
         </select>
       </div>
 
       <div class="col-md-3">
         <label class="form-label">Etapa (Proceso)</label>
         <select id="filtroEtapa" class="form-select">
+          <!-- COMPLETAMENTE DINÁMICO -->
           <option value="">Todas</option>
-          <option value="pendiente">Pendiente</option>
-          <option value="presupuesto_enviado">Presupuesto enviado</option>
-          <option value="esperando_cliente">Esperando cliente</option>
-          <option value="en_progreso">En progreso</option>
-          <option value="finalizada">Finalizada</option>
-          <option value="cancelada">Cancelada</option>
         </select>
       </div>
-
 
       <div class="col-md-2 text-end">
         <button type="submit" class="btn btn-primary w-100">
@@ -81,8 +75,7 @@ include_once __DIR__ . '/../../includes/navbar.php';
         </tbody>
       </table>
     </div>
-  </div>
-</main>
+
 
 <script src="<?= BASE_URL ?>/assets/js/profesional/solicitudes.js" defer></script>
 
