@@ -16,7 +16,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     detalle: `${window.BASE_URL}/backend/api/usuarios/profesional/detalle_solicitud.php?id=${idSolicitud}`,
     chat: `${window.BASE_URL}/backend/api/chat/listar.php?solicitud_id=${idSolicitud}`,
     enviarMensaje: `${window.BASE_URL}/backend/api/chat/enviar.php`,
-    actualizarEstado: `${window.BASE_URL}/backend/api/solicitudes/actualizar_estado.php`
+    actualizarEstado: `${window.BASE_URL}/backend/api/solicitudes/actualizar_estado.php`,
+    denunciar: `${window.BASE_URL}/backend/api/denuncias/guardar_denuncia.php`
   };
 
   // === ELEMENTOS DEL DOM ===
@@ -38,6 +39,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   const btnRechazar = document.getElementById("btnRechazar");
   const btnCrearPresupuesto = document.getElementById("btnCrearPresupuesto");
 
+  const formDenuncia = document.getElementById("formDenuncia");
+
+  let idClienteDenunciado = null;
+
   // ==============================
   // CARGAR DETALLE
   // ==============================
@@ -53,6 +58,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
 
       const d = json.data;
+
+      idClienteDenunciado = d.cliente_id;
 
       nombreCliente.textContent = d.cliente ?? "—";
       direccion.textContent = d.direccion ?? "—";
@@ -71,17 +78,13 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <i class="bi bi-paperclip"></i> ${a.split("/").pop()}
               </a>
             </li>
-          `)
-          .join("");
+          `).join("");
       } else {
         bloqueAdjuntos.classList.add("d-none");
       }
 
-      // Estado de relación profesional
-      const estadoRelacion = d.estado_relacion ?? "";
-      console.log("[detalle-solicitud] estado_relacion:", estadoRelacion);
-
-      btnCrearPresupuesto.disabled = estadoRelacion !== "aceptada";
+      // Estado profesional
+      btnCrearPresupuesto.disabled = d.estado_relacion !== "aceptada";
 
     } catch (err) {
       console.error("Error cargando detalle:", err);
@@ -113,8 +116,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <div>${m.mensaje}</div>
                 <div class="text-muted small text-end mt-1">${m.created_at ?? ""}</div>
               </div>
-            </div>
-          `;
+            </div>`;
         })
         .join("");
 
@@ -196,7 +198,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   // ==============================
-  // BOTONES
+  // BOTONES ACEPTAR / RECHAZAR
   // ==============================
   if (btnAceptar) {
     btnAceptar.addEventListener("click", () => {
@@ -210,6 +212,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
+  // ==============================
+  // BOTÓN CREAR PRESUPUESTO
+  // ==============================
   if (btnCrearPresupuesto) {
     btnCrearPresupuesto.addEventListener("click", () => {
       window.location.href = `crear_presupuesto.php?id=${idSolicitud}`;
@@ -217,12 +222,55 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   // ==============================
-  // MODALES
+  // ENVÍO DE DENUNCIA
+  // ==============================
+  if (formDenuncia) {
+    formDenuncia.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const motivo = document.getElementById("motivoDenuncia").value;
+      const detalle = document.getElementById("detalleDenuncia").value;
+
+      if (!motivo || !detalle) {
+        mostrarModalError("Debe completar todos los campos.");
+        return;
+      }
+
+      try {
+        const resp = await fetch(API.denunciar, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            solicitud_id: idSolicitud,
+            denunciado_id: idClienteDenunciado,
+            motivo,
+            detalle,
+            tipo: "solicitud"  // TIPO FIXED
+          })
+        });
+
+        const json = await resp.json();
+        console.log("[detalle-solicitud] denuncia:", json);
+
+        if (json.success) {
+          bootstrap.Modal.getInstance(document.getElementById("modalDenuncia")).hide();
+          mostrarModalExito("Denuncia enviada correctamente");
+        } else {
+          mostrarModalError(json.error || "Error al enviar denuncia");
+        }
+
+      } catch (err) {
+        console.error(err);
+        mostrarModalError("Error al enviar denuncia");
+      }
+    });
+  }
+
+  // ==============================
+  // MODALES GENÉRICOS
   // ==============================
   function mostrarModalConfirmacion(texto, onConfirmar = null) {
     const modalEl = document.getElementById("modalConfirmacion");
-    if (!modalEl) return alert(texto);
-
     const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
     modalEl.querySelector(".modal-body").textContent = texto;
 
@@ -236,8 +284,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   function mostrarModalError(texto) {
     const modalEl = document.getElementById("modalError");
-    if (!modalEl) return alert(texto);
-
     const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
     modalEl.querySelector(".modal-body").textContent = texto;
     modal.show();
@@ -245,8 +291,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   function mostrarModalExito(texto) {
     const modalEl = document.getElementById("modalExito");
-    if (!modalEl) return alert(texto);
-
     const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
     modalEl.querySelector(".modal-body").textContent = texto;
     modal.show();
