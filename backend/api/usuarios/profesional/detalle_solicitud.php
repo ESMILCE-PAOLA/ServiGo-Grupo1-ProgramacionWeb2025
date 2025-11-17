@@ -8,7 +8,7 @@ header('Content-Type: application/json');
 try {
 
     // ============================
-    //  VALIDAR SESIÓN
+    // VALIDAR SESIÓN
     // ============================
     $user = $_SESSION['user'] ?? null;
 
@@ -27,7 +27,7 @@ try {
     }
 
     // ===============================
-    //  DETALLE PRINCIPAL DE LA SOLICITUD
+    // DETALLE PRINCIPAL DE LA SOLICITUD
     // ===============================
     $sql = "SELECT 
                 s.id,
@@ -56,9 +56,9 @@ try {
     }
 
     // ===============================
-    //  ESTADO ENTRE PROFESIONAL Y CLIENTE
+    // ESTADO ENTRE PROFESIONAL Y CLIENTE
     // ===============================
-    $sql2 = "SELECT estado, observacion, fecha_envio, fecha_respuesta
+    $sql2 = "SELECT estado, observacion, fecha_envio, fecha_respuesta, etapa
              FROM solicitudes_profesionales
              WHERE solicitud_id = :solicitud_id AND profesional_id = :profesional_id
              LIMIT 1";
@@ -72,16 +72,20 @@ try {
     $relacion = $stm2->fetch(PDO::FETCH_ASSOC);
 
     if ($relacion) {
-        $solicitud['estado_relacion']   = $relacion['estado'] ?? '';
-        $solicitud['observacion']       = $relacion['observacion'] ?? '';
-        $solicitud['fecha_envio']       = $relacion['fecha_envio'] ?? '';
-        $solicitud['fecha_respuesta']   = $relacion['fecha_respuesta'] ?? '';
+        // 👇 ESTA ES LA LÓGICA CLAVE:
+        // Si existe etapa, se usa como estado del proceso
+        $solicitud['estado_relacion'] = $relacion['etapa'] 
+                                        ?: ($relacion['estado'] ?? '');
+
+        $solicitud['observacion']     = $relacion['observacion'] ?? '';
+        $solicitud['fecha_envio']     = $relacion['fecha_envio'] ?? '';
+        $solicitud['fecha_respuesta'] = $relacion['fecha_respuesta'] ?? '';
     } else {
         $solicitud['estado_relacion'] = 'sin_registro';
     }
 
     // ===============================
-    //   RUBROS DEL PROFESIONAL
+    // RUBROS DEL PROFESIONAL
     // ===============================
     $sql3 = "SELECT r.descripcion 
              FROM rubros r
@@ -96,7 +100,7 @@ try {
     $solicitud['rubros_profesional'] = $rubros ?: ['Sin rubros asignados'];
 
     // ===============================
-    //   ADJUNTOS DE LA SOLICITUD  
+    // ADJUNTOS
     // ===============================
     $sqlAdj = "SELECT ruta 
                FROM solicitud_adjuntos
@@ -106,15 +110,12 @@ try {
     $stmAdj->execute([':idSolicitud' => $idSolicitud]);
 
     $adjuntos = $stmAdj->fetchAll(PDO::FETCH_COLUMN);
-
-    // Agregar al array final
     $solicitud['adjuntos'] = $adjuntos ?: [];
 
     // ===============================
-    //   RESPUESTA FINAL
+    // RESPUESTA
     // ===============================
     echo json_encode(['success' => true, 'data' => $solicitud]);
-
 
 } catch (Throwable $e) {
 
