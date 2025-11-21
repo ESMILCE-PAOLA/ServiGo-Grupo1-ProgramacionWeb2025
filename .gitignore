@@ -1,43 +1,41 @@
-# Archivos del sistema
+# ===============================
+# ARCHIVOS DEL SISTEMA
+# ===============================
 .DS_Store
 Thumbs.db
 desktop.ini
 
-# Configuración de IDEs
+# ===============================
+# CONFIGURACIÓN DE IDEs
+# ===============================
 .vscode/
 .idea/
 *.sublime-project
 *.sublime-workspace
 
-# Configuración de entorno
-.env
-*.env
-.env.*
-
-# Archivos temporales / cachés
+# ===============================
+# ARCHIVOS TEMPORALES / CACHÉ
+# ===============================
 *.log
 *.tmp
 *.cache
 *.bak
-*.swp
 *.zip
+*.rar
+*.7z
 
-# Directorios comunes de PHP
-/vendor/          # si más adelante usan Composer
-/node_modules/    # si agregan librerías JS con npm
-composer.lock
-package-lock.json
+# ===============================
+# ARCHIVOS DE DESARROLLO
+# ===============================
+/database/*.sql
+/_imported_original/
+/ServiGo_structurado_*/
+/ServiGo_estructura_base_*.zip
 
-# Directorios de XAMPP
-xamppfiles/
-htdocs/test/
-htdocs/temp/
+# ===============================
+# PHP / SERVIDOR LOCAL
+# ===============================
+/uploads/
+/vendor/
+/.env
 
-# Archivos de base de datos exportados
-*.sql
-*.sql.gz
-*.sqlite
-
-# Archivos de sistema operativo
-ehthumbs.db
-Icon?
