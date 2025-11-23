@@ -10,6 +10,8 @@ return [
         'charset' => 'utf8mb4'
     ],
     'app' => [
-        'base_url' => '/ServiGo' // Ajusta según tu carpeta/public path
+        'base_url' => '/ServiGo-Visitante' // Ajusta según tu carpeta/public path
     ]
 ];
+
+
