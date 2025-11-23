@@ -1,169 +1,20 @@
-/* ==========================================================
-   Estilos Globales - ServiGo
-   Autor: Esmilce 💛
-   Descripción:
-   Estilos base compartidos por TODA la aplicación:
-   tipografías, colores, espaciados y componentes comunes.
-   ========================================================== */
-
-/* ------------------------------
-   TIPOGRAFÍA Y COLORES BASE
---------------------------------- */
-body {
-    font-family: 'Poppins', sans-serif;
-    background-color: #f8f9fa;
-    color: #212529;
-    margin: 0;
-    padding: 0;
-}
-
-/* Links */
-a {
-    color: #0d6efd;
-    text-decoration: none;
-}
-a:hover {
-    text-decoration: underline;
-}
-
-/* Títulos generales */
-h1, h2, h3, h4, h5 {
-    font-weight: 600;
-    color: #1e1e1e;
-}
-
-/* ------------------------------
-   TARJETAS / CARDS
---------------------------------- */
-.card {
-    border-radius: 10px;
-    border: 1px solid #e3e3e3;
-    background-color: #ffffff;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
-}
-
-/* Hover suave */
-.card:hover {
-    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
-    transition: 0.2s ease-in-out;
-}
-
-/* ------------------------------
-   BOTONES
---------------------------------- */
-.btn-primary {
-    background-color: #0d6efd;
-    border-color: #0d6efd;
-}
-
-.btn-primary:hover {
-    background-color: #0b5ed7;
-    border-color: #0a58ca;
-}
-
-.btn-outline-primary {
-    border-color: #0d6efd;
-    color: #0d6efd;
-}
-
-.btn-outline-primary:hover {
-    background-color: #0d6efd;
-    color: white;
-}
-
-.btn-danger,
-.btn-outline-danger {
-    border-color: #dc3545;
-    color: #dc3545;
-}
-
-.btn-danger:hover,
-.btn-outline-danger:hover {
-    background-color: #dc3545;
-    color: white;
-}
-
-/* ------------------------------
-   TABLAS
---------------------------------- */
-table.table {
-    background-color: white;
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-table thead {
-    background-color: #f0f0f0;
-    color: #333;
-    font-weight: 600;
-}
-
-table td input {
-    height: 38px;
-}
-
-/* ------------------------------
-   FORMULARIOS
---------------------------------- */
-.form-control {
-    border-radius: 6px;
-    border: 1px solid #ced4da;
-}
-
-.form-control:focus {
-    border-color: #0d6efd;
-    box-shadow: 0 0 4px rgba(13, 110, 253, 0.25);
-}
-
-/* Label */
-.form-label {
-    font-weight: 500;
-}
-
-/* ------------------------------
-   NAVBAR
---------------------------------- */
-.navbar {
-    background-color: #111 !important;
-}
-
-.navbar-brand {
-    font-weight: bold;
-    color: #ffc107 !important;
-}
-
-/* Menú del navbar */
-.nav-link {
-    color: #e5e5e5 !important;
-    font-weight: 500;
-}
-.nav-link:hover {
-    color: #ffffff !important;
-}
-
-/* ------------------------------
-   UTILIDADES
---------------------------------- */
-
-/* Línea divisoria suave */
-.divider {
-    height: 1px;
-    background-color: #e3e3e3;
-    margin: 1rem 0;
-}
-
-/* Margen estándar */
-.m-section {
-    margin-top: 2rem;
-    margin-bottom: 2rem;
-}
-
-/* Íconos más centrados */
-i.bi {
-    vertical-align: middle;
-}
-
-/* Botón de eliminar ítem (tachito) */
-.btnEliminar i.bi-trash {
-    font-size: 1.1rem;
-}
+:root{--bg:#0b0f13;--fg:#e7e9ee;--card:#141a21;--accent:#3aa0ff;--muted:#8a93a3}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,sans-serif;background:var(--bg);color:var(--fg)}
+.navbar{display:flex;gap:16px;align-items:center;padding:12px 20px;background:#0e141b;border-bottom:1px solid #1e2630}
+.navbar a{color:var(--fg);text-decoration:none;font-weight:600}
+.navbar .spacer{flex:1}
+.container{max-width:1100px;margin:0 auto;padding:24px}
+.card{background:var(--card);border:1px solid #1e2630;border-radius:12px;padding:20px}
+.btn{display:inline-block;padding:10px 16px;border-radius:8px;border:1px solid #2a3442;background:#16202b;color:var(--fg);text-decoration:none;cursor:pointer}
+.btn.primary{background:var(--accent);color:#07101a;border-color:transparent}
+.table{width:100%;border-collapse:collapse}
+.table th,.table td{padding:10px 8px;border-bottom:1px solid #1e2630;text-align:left}
+form input,form select,form textarea{width:100%;padding:10px;border-radius:8px;border:1px solid #2a3442;background:#131923;color:var(--fg);outline:none}
+form label{display:block;margin:10px 0 6px 0}
+.grid{display:grid;gap:16px}
+.grid.cols-2{grid-template-columns:repeat(2,1fr)}
+.grid.cols-3{grid-template-columns:repeat(3,1fr)}
+.alert{padding:12px 14px;border-radius:8px;background:#15212c;border:1px solid #243244}
+.alert.ok{border-color:#2b8a3e}
+.alert.error{border-color:#b02a37}
+footer.footer{padding:20px;text-align:center;color:var(--muted)}

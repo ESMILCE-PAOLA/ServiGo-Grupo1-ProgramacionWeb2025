@@ -28,6 +28,7 @@ $rol = $_SESSION['user']['rol'] ?? 'visitante';
       <?php elseif ($rol === 'profesional'): ?>
         <li class="nav-item"><a class="nav-link" href="/ServiGo/ServiGo-Grupo1-ProgramacionWeb2025/views/profesional/index.php">Inicio</a></li>
         <li class="nav-item"><a class="nav-link" href="/ServiGo/ServiGo-Grupo1-ProgramacionWeb2025/views/profesional/solicitudes-profesional.php">Solicitudes</a></li>
+        <li class="nav-item"><a class="nav-link" href="/ServiGo/ServiGo-Grupo1-ProgramacionWeb2025/views/profesional/crear_presupuesto.php">Presupuestos</a></li>
         <li class="nav-item"><a class="nav-link" href="/ServiGo/ServiGo-Grupo1-ProgramacionWeb2025/views/profesional/perfil_profesional.php">Mi perfil</a></li>
 
       <?php elseif ($rol === 'administrador'): ?>

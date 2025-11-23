@@ -20,10 +20,3 @@ function require_role($roles = []) {
         exit;
     }
 }
-
-function isRole($rol) {
-  return isset($_SESSION['user']) && (
-    ($_SESSION['user']['rol'] ?? $_SESSION['user']['rol_slug'] ?? '') === $rol
-  );
-}
-

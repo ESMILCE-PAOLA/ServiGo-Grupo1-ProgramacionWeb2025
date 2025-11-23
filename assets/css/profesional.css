@@ -96,25 +96,3 @@ form#formFiltros button.btn-primary:hover {
   background-color: #0bb6d9;
   color: #fff;
 }
-
-/* BURBUJAS CLIENTE (izquierda - verde suave) */
-.bubble-cli {
-  background-color: #e8f5e9; /* verde claro */
-  color: #1b5e20;
-  border: 1px solid #c8e6c9;
-  max-width: 70%;
-}
-
-/* BURBUJAS PROFESIONAL (derecha - azul suave) */
-.bubble-pro {
-  background-color: #e3f2fd; /* celeste */
-  color: #0d47a1;
-  border: 1px solid #bbdefb;
-  max-width: 70%;
-}
-
-/* Sombra leve */
-.chat-bubble {
-  border-radius: 12px;
-  padding: 10px 14px;
-}
