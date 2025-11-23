@@ -36,10 +36,10 @@ $BASE = $config['app']['base_url'];
         <li class="nav-item"><a class="nav-link" href="<?= $BASE ?>/views/profesional/perfil_profesional.php">Mi perfil</a></li>
 
       <?php elseif ($rol === 'administrador'): ?>
-        <li class="nav-item"><a class="nav-link" href="/ServiGo-Grupo1-ProgramacionWeb2025/views/administrador/index.php">Inicio</a></li>
-        <li class="nav-item"><a class="nav-link" href="/ServiGo-Grupo1-ProgramacionWeb2025/views/administrador/GestionUsuarios.php">Usuarios</a></li>
-        <li class="nav-item"><a class="nav-link" href="/ServiGo-Grupo1-ProgramacionWeb2025/views/administrador/GestionDenuncias.php">Denuncias</a></li>
-        <li class="nav-item"><a class="nav-link" href="/ServiGo-Grupo1-ProgramacionWeb2025/views/administrador/perfil_administrador.php">Mi perfil</a></li>
+        <li class="nav-item"><a class="nav-link" href="<?= $BASE ?>/views/administrador/index.php">Inicio</a></li>
+        <li class="nav-item"><a class="nav-link" href="<?= $BASE ?>/views/administrador/GestionUsuarios.php">Usuarios</a></li>
+        <li class="nav-item"><a class="nav-link" href="<?= $BASE ?>/views/administrador/GestionDenuncias.php">Denuncias</a></li>
+        <li class="nav-item"><a class="nav-link" href="<?= $BASE ?>/views/administrador/perfil_administrador.php">Mi perfil</a></li>
       <?php endif; ?>
 
       <?php if ($rol !== 'visitante'): ?>

@@ -6,6 +6,13 @@ $stmt = $pdo->prepare($sql);
 $stmt->execute();
 $localidades = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+
+$sql = "SELECT * FROM rubros";
+$stmt = $pdo->prepare($sql);
+$stmt->execute();
+$rubros = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
 ?>
 
 
@@ -48,12 +55,12 @@ $localidades = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <div class="col-md-6 col-sm-12">
           <label for="servicio" class="form-label mb-1">Filtrar por servicio</label>
           <select id="servicio" class="form-select">
-            <option value="">Todos</option>
-            <option value="electricista">Electricista</option>
-            <option value="plomero">Plomero</option>
-            <option value="pintor">Pintor</option>
-            <option value="carpintero">Carpintero</option>
-            <option value="gasista">Gasista</option>
+            <option value="">Elige un rubro</option>
+                <?php
+                    foreach ($rubros as $localidad) {
+                        echo '<option value="' . $localidad["id"] . '">' . $localidad["nombre"] .'</option>';
+                    }
+                ?>
           </select>
         </div>
 
@@ -62,8 +69,8 @@ $localidades = $stmt->fetchAll(PDO::FETCH_ASSOC);
           <select id="Localidad" class="form-select">
             <option value="">Elige una Localidad</option>
                 <?php
-                    foreach ($localidades as $localidad) {
-                        echo '<option value="' . $localidad["id"] . '">' . $localidad["nombre"] .'</option>';
+                    foreach ($localidades as $r) {
+                        echo '<option value="' . $r["id"] . '">' . $r["nombre"] .'</option>';
                     }
                 ?>
           </select>

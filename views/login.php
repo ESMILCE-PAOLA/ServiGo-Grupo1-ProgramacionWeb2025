@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,7 +16,7 @@
                 <div id="CardLogin" class="card">
                     <div class="card-body">
                         <div class="container">
-                              <h3>⚡ ServiGo</h3>
+                            <h3>⚡ ServiGo</h3>
                         <div>
                         <h5 class="card-title text-center mb-4">Iniciar Sesión</h5>
 
@@ -42,8 +43,7 @@
                         </form>
                           <div id="loginMsg" class="alert" style="display:none"></div>
                         <div class="text-center mt-3">
-                            <a class="enlace" href="#" data-bs-toggle="modal"
-                                data-bs-target="#recuperarClaveModal">¿Olvidaste tu
+                            <a class="enlace" href="CambiarPass.php" >¿Olvidaste tu
                                 contraseña?</a>
                             <!--Se activa el modal-->
                         </div>
@@ -64,8 +64,8 @@ document.getElementById('fLogin').addEventListener('submit', async (e)=>{
   const form = new FormData(e.target);
   const body = Object.fromEntries(form.entries());
   try{
-    const r = await api('/ServiGo/backend/api/auth/login.php', {method:'POST', body: JSON.stringify(body)});
-    location.href = r.redirect || '/ServiGo/';
+    const r = await api('/ServiGo-Visitante/backend/api/auth/login.php', {method:'POST', body: JSON.stringify(body)});
+    location.href = r.redirect || '/ServiGo-Visitante/';
   }catch(err){
     const m = document.getElementById('loginMsg');
     m.textContent = err.message; m.className='alert error'; m.style.display='block';

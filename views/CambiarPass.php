@@ -39,7 +39,7 @@
                                 <p class="text-danger clave2-mal d-none"></p>
                             </div>
                             <div class="container">
-                                <input type="submit" value="Iniciar Sesión" class="btn btn-primary w-100 enviar-btn"
+                                <input type="submit" value="Cambiar Contraseña" class="btn btn-primary w-100 enviar-btn"
                                     name="log">
                             </div>
                         </form>
