@@ -83,6 +83,10 @@ if (!$id) {
   <!-- ===================== -->
   <!-- BOTONES DE ACCIÓN -->
   <!-- ===================== -->
+  <button id="btnVerPresupuesto" class="btn btn-info" style="display:none;">
+      Ver presupuesto
+  </button>
+
   <div class="text-center mt-4">
     <button id="btnCrearPresupuesto" class="btn btn-primary me-2" disabled>
       <i class="bi bi-receipt"></i> Crear Presupuesto

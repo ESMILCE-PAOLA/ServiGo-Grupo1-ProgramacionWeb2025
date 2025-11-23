@@ -12,12 +12,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     return;
   }
 
+  // ==============================
+  // ENDPOINTS USADOS
+  // ==============================
   const API = {
     detalle: `${window.BASE_URL}/backend/api/usuarios/profesional/detalle_solicitud.php?id=${idSolicitud}`,
     chat: `${window.BASE_URL}/backend/api/chat/listar.php?solicitud_id=${idSolicitud}`,
     enviarMensaje: `${window.BASE_URL}/backend/api/chat/enviar.php`,
     actualizarEstado: `${window.BASE_URL}/backend/api/solicitudes/actualizar_estado.php`,
-    denunciar: `${window.BASE_URL}/backend/api/denuncias/guardar_denuncia.php`
+    denunciar: `${window.BASE_URL}/backend/api/denuncias/guardar_denuncia.php`,
+    verPresupuesto: `${window.BASE_URL}/backend/api/presupuestos/ver.php?id=${idSolicitud}`
   };
 
   // === ELEMENTOS DEL DOM ===
@@ -38,13 +42,14 @@ document.addEventListener("DOMContentLoaded", async () => {
   const btnAceptar = document.getElementById("btnAceptar");
   const btnRechazar = document.getElementById("btnRechazar");
   const btnCrearPresupuesto = document.getElementById("btnCrearPresupuesto");
+  const btnVerPresupuesto = document.getElementById("btnVerPresupuesto");
 
   const formDenuncia = document.getElementById("formDenuncia");
 
   let idClienteDenunciado = null;
 
   // ==============================
-  // CARGAR DETALLE
+  // CARGAR DETALLE DE LA SOLICITUD
   // ==============================
   async function cargarDetalle() {
     try {
@@ -68,7 +73,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       fecha.textContent = d.created_at ?? "—";
       descripcion.textContent = d.descripcion ?? "—";
 
-      // Adjuntos
+      // ==============================
+      // ADJUNTOS
+      // ==============================
       if (d.adjuntos && d.adjuntos.length > 0) {
         bloqueAdjuntos.classList.remove("d-none");
         listaAdjuntos.innerHTML = d.adjuntos
@@ -83,8 +90,20 @@ document.addEventListener("DOMContentLoaded", async () => {
         bloqueAdjuntos.classList.add("d-none");
       }
 
-      // Estado profesional
+      // ==============================
+      // ESTADO PARA CREAR PRESUPUESTO
+      // Solo puede crear si está ACEPTADA
+      //  → MOSTRAR BOTÓN "VER PRESUPUESTO"
+      // ==============================
       btnCrearPresupuesto.disabled = d.estado_relacion !== "aceptada";
+
+        if (d.tiene_presupuesto) {
+            btnCrearPresupuesto.style.display = "none";
+            btnVerPresupuesto.style.display = "inline-block";
+        } else {
+            btnVerPresupuesto.style.display = "none";
+        }
+
 
     } catch (err) {
       console.error("Error cargando detalle:", err);
@@ -167,7 +186,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   // ==============================
-  // CAMBIAR ESTADO
+  // CAMBIAR ESTADO (aceptar / rechazar)
   // ==============================
   async function cambiarEstado(estado) {
     try {
@@ -193,13 +212,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     } catch (err) {
       console.error(err);
-      mostrarModalError("Error de servidor al actualizar el estado");
+      mostrarModalError("Error en el servidor");
     }
   }
 
-  // ==============================
   // BOTONES ACEPTAR / RECHAZAR
-  // ==============================
   if (btnAceptar) {
     btnAceptar.addEventListener("click", () => {
       mostrarModalConfirmacion("¿Aceptar esta solicitud?", () => cambiarEstado("aceptada"));
@@ -218,6 +235,15 @@ document.addEventListener("DOMContentLoaded", async () => {
   if (btnCrearPresupuesto) {
     btnCrearPresupuesto.addEventListener("click", () => {
       window.location.href = `crear_presupuesto.php?id=${idSolicitud}`;
+    });
+  }
+
+  // ==============================
+  // BOTÓN VER PRESUPUESTO
+  // ==============================
+  if (btnVerPresupuesto) {
+    btnVerPresupuesto.addEventListener("click", () => {
+      window.location.href = `ver_presupuesto.php?id=${idSolicitud}`;
     });
   }
 
@@ -245,7 +271,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             denunciado_id: idClienteDenunciado,
             motivo,
             detalle,
-            tipo: "solicitud"  // TIPO FIXED
+            tipo: "solicitud"
           })
         });
 
@@ -301,5 +327,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   // ==============================
   await cargarDetalle();
   await cargarChat();
+
   console.log("[detalle-solicitud] inicialización completa");
 });
