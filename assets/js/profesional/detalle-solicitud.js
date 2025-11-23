@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     enviarMensaje: `${window.BASE_URL}/backend/api/chat/enviar.php`,
     actualizarEstado: `${window.BASE_URL}/backend/api/solicitudes/actualizar_estado.php`,
     denunciar: `${window.BASE_URL}/backend/api/denuncias/guardar_denuncia.php`,
-    verPresupuesto: `${window.BASE_URL}/backend/api/presupuestos/obtener_por_solicitud.php?id=${idSolicitud}`
+    verPresupuesto: `${window.BASE_URL}/backend/api/presupuestos/ver.php?id=${idSolicitud}`
   };
 
   // === ELEMENTOS DEL DOM ===
@@ -93,18 +93,17 @@ document.addEventListener("DOMContentLoaded", async () => {
       // ==============================
       // ESTADO PARA CREAR PRESUPUESTO
       // Solo puede crear si está ACEPTADA
+      //  → MOSTRAR BOTÓN "VER PRESUPUESTO"
       // ==============================
       btnCrearPresupuesto.disabled = d.estado_relacion !== "aceptada";
 
-      // ==============================
-      // SI YA HAY PRESUPUESTO → MOSTRAR BOTÓN "VER PRESUPUESTO"
-      // ==============================
-      if (d.estado_relacion === "presupuesto") {
-        if (btnCrearPresupuesto) btnCrearPresupuesto.style.display = "none";
-        if (btnVerPresupuesto) btnVerPresupuesto.style.display = "inline-block";
-      } else {
-        if (btnVerPresupuesto) btnVerPresupuesto.style.display = "none";
-      }
+        if (d.tiene_presupuesto) {
+            btnCrearPresupuesto.style.display = "none";
+            btnVerPresupuesto.style.display = "inline-block";
+        } else {
+            btnVerPresupuesto.style.display = "none";
+        }
+
 
     } catch (err) {
       console.error("Error cargando detalle:", err);

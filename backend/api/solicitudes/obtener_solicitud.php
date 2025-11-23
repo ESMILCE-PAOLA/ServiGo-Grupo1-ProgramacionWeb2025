@@ -10,11 +10,18 @@ if(!$id){
 }
 
 try {
-    $sql = "SELECT s.id, s.titulo, s.descripcion, s.created_at, 
-                   u.nombre AS cliente,
-                   s.direccion
+    $sql = "SELECT 
+                s.id,
+                s.titulo,
+                s.descripcion,
+                s.created_at,
+                s.estado,                     
+                s.direccion,
+                l.nombre AS localidad,         
+                u.nombre AS cliente
             FROM solicitudes s
             JOIN usuarios u ON u.id = s.cliente_id
+            LEFT JOIN localidades l ON l.id = s.id_localidad
             WHERE s.id = :id";
 
     $stmt = $pdo->prepare($sql);

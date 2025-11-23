@@ -72,11 +72,7 @@ try {
     $relacion = $stm2->fetch(PDO::FETCH_ASSOC);
 
     if ($relacion) {
-        // 👇 ESTA ES LA LÓGICA CLAVE:
-        // Si existe etapa, se usa como estado del proceso
-        $solicitud['estado_relacion'] = $relacion['etapa'] 
-                                        ?: ($relacion['estado'] ?? '');
-
+        $solicitud['estado_relacion'] = $relacion['estado'];
         $solicitud['observacion']     = $relacion['observacion'] ?? '';
         $solicitud['fecha_envio']     = $relacion['fecha_envio'] ?? '';
         $solicitud['fecha_respuesta'] = $relacion['fecha_respuesta'] ?? '';
@@ -85,19 +81,24 @@ try {
     }
 
     // ===============================
-    // RUBROS DEL PROFESIONAL
+    // VERIFICAR SI YA EXISTE PRESUPUESTO
     // ===============================
-    $sql3 = "SELECT r.descripcion 
-             FROM rubros r
-             INNER JOIN rubros_profesional rp ON rp.rubro_id = r.id
-             WHERE rp.profesional_id = :idProfesional";
+    $sqlP = "SELECT id 
+             FROM presupuestos 
+             WHERE solicitud_id = :solicitud_id 
+               AND profesional_id = :profesional_id 
+             LIMIT 1";
 
-    $stm3 = $pdo->prepare($sql3);
-    $stm3->execute([':idProfesional' => $idProfesional]);
+    $stmP = $pdo->prepare($sqlP);
+    $stmP->execute([
+        ':solicitud_id' => $idSolicitud,
+        ':profesional_id' => $idProfesional
+    ]);
 
-    $rubros = $stm3->fetchAll(PDO::FETCH_COLUMN);
+    $presupuesto = $stmP->fetch(PDO::FETCH_ASSOC);
 
-    $solicitud['rubros_profesional'] = $rubros ?: ['Sin rubros asignados'];
+    $solicitud['tiene_presupuesto'] = $presupuesto ? true : false;
+    $solicitud['id_presupuesto'] = $presupuesto['id'] ?? null;
 
     // ===============================
     // ADJUNTOS
@@ -109,8 +110,7 @@ try {
     $stmAdj = $pdo->prepare($sqlAdj);
     $stmAdj->execute([':idSolicitud' => $idSolicitud]);
 
-    $adjuntos = $stmAdj->fetchAll(PDO::FETCH_COLUMN);
-    $solicitud['adjuntos'] = $adjuntos ?: [];
+    $solicitud['adjuntos'] = $stmAdj->fetchAll(PDO::FETCH_COLUMN) ?: [];
 
     // ===============================
     // RESPUESTA

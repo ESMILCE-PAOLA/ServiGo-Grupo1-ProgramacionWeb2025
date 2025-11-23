@@ -1,61 +1,75 @@
 document.addEventListener("DOMContentLoaded", async () => {
+    const idPresupuesto = window.ID_PRESUPUESTO;
 
-    const params = new URLSearchParams(window.location.search);
-    const idSolicitud = params.get("id");   // <── CORREGIDO
-
-    if (!idSolicitud) {
-        document.getElementById("presupuestoContainer").innerHTML =
-            `<div class="alert alert-danger">ID de solicitud no especificado.</div>`;
+    if (!idPresupuesto) {
+        document.getElementById("contenedorPresupuesto").innerHTML =
+            `<div class="alert alert-danger">ID de presupuesto no especificado.</div>`;
         return;
     }
 
-    const resp = await fetch(
-        `${window.BASE_URL}/backend/api/presupuestos/obtener.php?solicitud_id=${idSolicitud}`
-    );
-    const json = await resp.json();
+    try {
+        const resp = await fetch(
+            `${window.BASE_URL}/backend/api/presupuestos/ver.php?id=${idPresupuesto}`
+        );
 
-    if (!json.success) {
-        document.getElementById("presupuestoContainer").innerHTML =
-            `<div class="alert alert-danger">${json.error}</div>`;
-        return;
-    }
+        const json = await resp.json();
 
-    const p = json.data.presupuesto;
-    const det = json.data.detalle;
+        if (!json.success) {
+            document.getElementById("contenedorPresupuesto").innerHTML =
+                `<div class="alert alert-danger">${json.error}</div>`;
+            return;
+        }
 
-    let html = `
-        <p><strong>Fecha emisión:</strong> ${p.fecha_emision}</p>
-        <p><strong>Válido hasta:</strong> ${p.valido_hasta}</p>
-        <p><strong>Condiciones:</strong> ${p.condiciones || "Sin condiciones adicionales"}</p>
+        const p = json.data;
+        const det = json.data.detalle;
 
-        <h5>Detalle</h5>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Cantidad</th>
-                    <th>Descripción</th>
-                    <th>Precio Unit.</th>
-                    <th>Subtotal</th>
-                </tr>
-            </thead>
-            <tbody>
-    `;
+        // ================
+        // ARMAR HTML COMPLETO
+        // ================
+        let html = `
+            <div class="mb-4">
+                <p><strong>Cliente:</strong> ${p.cliente}</p>
+                <p><strong>Fecha de Solicitud:</strong> ${p.fecha_solicitud}</p>
+                <p><strong>Fecha de Emisión:</strong> ${p.fecha_emision}</p>
+                <p><strong>Válido Hasta:</strong> ${p.valido_hasta}</p>
+                <p><strong>Condiciones:</strong> ${p.condiciones || "Sin condiciones"}</p>
+            </div>
 
-    det.forEach(d => {
-        html += `
-            <tr>
-                <td>${d.cantidad}</td>
-                <td>${d.descripcion}</td>
-                <td>$${d.precio_unitario}</td>
-                <td>$${d.subtotal}</td>
-            </tr>
+            <h5 class="mt-4">Detalle del Servicio</h5>
+            <table class="table table-bordered text-light">
+                <thead class="table-secondary text-dark">
+                    <tr>
+                        <th>Cantidad</th>
+                        <th>Descripción</th>
+                        <th>Precio Unitario</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
         `;
-    });
 
-    html += `
-        </tbody></table>
-        <h4>Total: $${p.total}</h4>
-    `;
+        det.forEach(item => {
+            html += `
+                <tr>
+                    <td>${item.cantidad}</td>
+                    <td>${item.descripcion}</td>
+                    <td>$${item.precio_unitario}</td>
+                    <td>$${item.subtotal}</td>
+                </tr>
+            `;
+        });
 
-    document.getElementById("presupuestoContainer").innerHTML = html;
+        html += `
+                </tbody>
+            </table>
+            <h4 class="mt-3 text-end">TOTAL: $${p.total}</h4>
+        `;
+
+        document.getElementById("contenedorPresupuesto").innerHTML = html;
+
+    } catch (err) {
+        console.error(err);
+        document.getElementById("contenedorPresupuesto").innerHTML =
+            `<div class="alert alert-danger">Error al cargar el presupuesto.</div>`;
+    }
 });

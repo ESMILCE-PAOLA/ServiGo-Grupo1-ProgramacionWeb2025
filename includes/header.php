@@ -27,7 +27,8 @@ require_once __DIR__ . '/config.php';
       'solicitudes',
       'detalle-solicitud',
       'perfil',
-      'crear-presupuesto'
+      'crear-presupuesto',
+      'ver-presupuesto'
     ];
 
     if (isset($active) && in_array($active, $css_profesional)):
