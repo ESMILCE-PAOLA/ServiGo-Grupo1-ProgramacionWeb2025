@@ -23,8 +23,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function validar() {
 
-  console.log(email.value);
-  console.log(clave.value);
+ // console.log(email.value);
+  //console.log(clave.value);
   if (email.value.trim() === "") {
     divMail.textContent = "El email es obligatorio.";
     email.classList.add("is-invalid");
