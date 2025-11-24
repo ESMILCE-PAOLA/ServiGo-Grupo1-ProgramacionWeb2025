@@ -1,6 +1,8 @@
 <?php
-require __DIR__ . '/../../../includes/session.php';
-$config = include __DIR__ . '/../config.php';
-$BASE = $config['app']['base_url'];
+session_start();
+session_unset();
 session_destroy();
-header("Location: <?= $BASE ?>/");
+
+// Redirigir SIEMPRE al home del visitante
+header("Location: /ServiGo/ServiGo-Grupo1-ProgramacionWeb2025/views/visitante/home.php");
+exit;
