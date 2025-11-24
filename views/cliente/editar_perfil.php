@@ -1,6 +1,6 @@
 <?php
-session_start();
-require_once '../db.php';
+//session_start();
+//require_once '../db.php';
 
 if (!isset($_SESSION['usuario_id']) || $_SESSION['rol_id'] != 2) {
     header('Location: ../login.php');
