@@ -32,7 +32,6 @@ $BASE = $config['app']['base_url'];
       <?php elseif ($rol === 'profesional'): ?>
         <li class="nav-item"><a class="nav-link" href="<?= $BASE ?>/views/profesional/index.php">Inicio</a></li>
         <li class="nav-item"><a class="nav-link" href="<?= $BASE ?>/views/profesional/solicitudes-profesional.php">Solicitudes</a></li>
-        <li class="nav-item"><a class="nav-link" href="<?= $BASE ?>/views/profesional/crear_presupuesto.php">Presupuestos</a></li>
         <li class="nav-item"><a class="nav-link" href="<?= $BASE ?>/views/profesional/perfil_profesional.php">Mi perfil</a></li>
 
       <?php elseif ($rol === 'administrador'): ?>
@@ -43,7 +42,7 @@ $BASE = $config['app']['base_url'];
       <?php endif; ?>
 
       <?php if ($rol !== 'visitante'): ?>
-        <li class="nav-item"><a class="nav-link text-danger" href="/ServiGo-Grupo1-ProgramacionWeb2025/backend/api/auth/logout.php">Cerrar sesión</a></li>
+        <li class="nav-item"><a class="nav-link text-danger" href="/ServiGo/ServiGo-Grupo1-ProgramacionWeb2025/backend/api/auth/logout.php">Cerrar sesión</a></li>
       <?php endif; ?>
     </ul>
   </div>
