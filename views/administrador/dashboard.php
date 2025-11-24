@@ -5,7 +5,7 @@
 //require_once 'verificar_admin.php';
 
 // Conexión DB: Para contar usuarios y denuncias
-require_once '../../backend/db.php'; 
+require_once __DIR__ . '/../../includes/db.php'; 
 
 // Variables
 $totalUsuarios = 0;
