@@ -6,10 +6,9 @@ require_once __DIR__ . '/../../../../includes/auth.php';
 header('Content-Type: application/json');
 
 try {
-
-    // ============================
-    // VALIDAR SESIÓN
-    // ============================
+    // =====================================================
+    // VALIDAR SESIÓN Y ROL
+    // =====================================================
     $user = $_SESSION['user'] ?? null;
 
     if (!$user || ($user['rol'] ?? '') !== 'profesional') {
@@ -19,16 +18,46 @@ try {
     }
 
     $idProfesional = intval($user['id'] ?? 0);
-    $idSolicitud = intval($_GET['id'] ?? 0);
 
-    if ($idSolicitud <= 0) {
-        echo json_encode(['success' => false, 'error' => 'ID inválido']);
+    if ($idProfesional <= 0) {
+        echo json_encode(['success' => false, 'error' => 'Profesional inválido']);
         exit;
     }
 
-    // ===============================
-    // DETALLE PRINCIPAL DE LA SOLICITUD
-    // ===============================
+    // =====================================================
+    // VALIDAR ID DE SOLICITUD
+    // =====================================================
+    $idSolicitud = $_GET['id'] ?? null;
+
+    if ($idSolicitud === null || !ctype_digit($idSolicitud)) {
+        echo json_encode(['success' => false, 'error' => 'ID de solicitud inválido']);
+        exit;
+    }
+
+    $idSolicitud = intval($idSolicitud);
+
+    // =====================================================
+    // VALIDAR QUE LA SOLICITUD PERTENECE AL PROFESIONAL
+    // =====================================================
+    $sqlCheck = "SELECT COUNT(*)
+                 FROM solicitudes_profesionales 
+                 WHERE solicitud_id = :solicitud_id
+                   AND profesional_id = :profesional_id";
+
+    $stmCheck = $pdo->prepare($sqlCheck);
+    $stmCheck->execute([
+        ':solicitud_id' => $idSolicitud,
+        ':profesional_id' => $idProfesional
+    ]);
+
+    if ($stmCheck->fetchColumn() == 0) {
+        echo json_encode(['success' => false, 'error' => 'No tiene acceso a esta solicitud']);
+        exit;
+    }
+
+    // =====================================================
+    // OBTENER DETALLE PRINCIPAL DE LA SOLICITUD
+    // =====================================================
     $sql = "SELECT 
                 s.id,
                 s.titulo,
@@ -55,12 +84,18 @@ try {
         exit;
     }
 
-    // ===============================
-    // ESTADO ENTRE PROFESIONAL Y CLIENTE
-    // ===============================
-    $sql2 = "SELECT estado, observacion, fecha_envio, fecha_respuesta, etapa
+    if (!$solicitud['cliente_id']) {
+        echo json_encode(['success' => false, 'error' => 'La solicitud no tiene cliente asignado']);
+        exit;
+    }
+
+    // =====================================================
+    // ESTADO RELACIÓN PROFESIONAL–SOLICITUD
+    // =====================================================
+    $sql2 = "SELECT estado, observacion, fecha_envio, fecha_respuesta
              FROM solicitudes_profesionales
-             WHERE solicitud_id = :solicitud_id AND profesional_id = :profesional_id
+             WHERE solicitud_id = :solicitud_id 
+               AND profesional_id = :profesional_id
              LIMIT 1";
 
     $stm2 = $pdo->prepare($sql2);
@@ -72,21 +107,21 @@ try {
     $relacion = $stm2->fetch(PDO::FETCH_ASSOC);
 
     if ($relacion) {
-        $solicitud['estado_relacion'] = $relacion['estado'];
-        $solicitud['observacion']     = $relacion['observacion'] ?? '';
-        $solicitud['fecha_envio']     = $relacion['fecha_envio'] ?? '';
-        $solicitud['fecha_respuesta'] = $relacion['fecha_respuesta'] ?? '';
+        $solicitud['estado_relacion']  = $relacion['estado'];
+        $solicitud['observacion']      = $relacion['observacion'] ?? '';
+        $solicitud['fecha_envio']      = $relacion['fecha_envio'] ?? '';
+        $solicitud['fecha_respuesta']  = $relacion['fecha_respuesta'] ?? '';
     } else {
         $solicitud['estado_relacion'] = 'sin_registro';
     }
 
-    // ===============================
+    // =====================================================
     // VERIFICAR SI YA EXISTE PRESUPUESTO
-    // ===============================
+    // =====================================================
     $sqlP = "SELECT id 
              FROM presupuestos 
              WHERE solicitud_id = :solicitud_id 
-               AND profesional_id = :profesional_id 
+               AND profesional_id = :profesional_id
              LIMIT 1";
 
     $stmP = $pdo->prepare($sqlP);
@@ -100,21 +135,22 @@ try {
     $solicitud['tiene_presupuesto'] = $presupuesto ? true : false;
     $solicitud['id_presupuesto'] = $presupuesto['id'] ?? null;
 
-    // ===============================
+    // =====================================================
     // ADJUNTOS
-    // ===============================
-    $sqlAdj = "SELECT ruta 
-               FROM solicitud_adjuntos
-               WHERE solicitud_id = :idSolicitud";
+    // =====================================================
+    $sqlAdj = "
+        SELECT ruta 
+        FROM solicitud_adjuntos
+        WHERE solicitud_id = :idSolicitud";
 
     $stmAdj = $pdo->prepare($sqlAdj);
     $stmAdj->execute([':idSolicitud' => $idSolicitud]);
 
     $solicitud['adjuntos'] = $stmAdj->fetchAll(PDO::FETCH_COLUMN) ?: [];
 
-    // ===============================
+    // =====================================================
     // RESPUESTA
-    // ===============================
+    // =====================================================
     echo json_encode(['success' => true, 'data' => $solicitud]);
 
 } catch (Throwable $e) {
@@ -124,5 +160,4 @@ try {
         'success' => false,
         'error' => $e->getMessage()
     ]);
-
 }

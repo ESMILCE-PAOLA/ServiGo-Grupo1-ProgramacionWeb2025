@@ -63,6 +63,9 @@ require_once __DIR__ . '/../backend/config.php';
     <?php endif; ?>
   <?php endif; ?>
 
+  <!-- JS global: denuncias -->
+  <script src="<?= BASE_URL ?>/assets/js/denuncias/denunciar.js?v=<?= time() ?>" defer></script>
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
 </head>
 <body class="bg-light text-dark">

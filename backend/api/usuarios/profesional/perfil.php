@@ -1,18 +1,26 @@
 <?php
-require_once __DIR__ . '/../../../../includes/db.php';
 header('Content-Type: application/json');
 
-// Verificar ID
+// ===========================
+// CARGAR CONFIG Y DB
+// ===========================
+require_once __DIR__ . '/../../../../backend/config.php';
+require_once __DIR__ . '/../../../../includes/db.php';
+
+// ===========================
+// VALIDAR ID DEL PROFESIONAL
+// ===========================
 $id = $_GET['id'] ?? null;
+
 if (!$id) {
     echo json_encode(["success" => false, "error" => "ID no especificado"]);
     exit;
 }
 
 try {
-    // ============================
-    // DATOS PRINCIPALES DEL PROFESIONAL
-    // ============================
+    // ===========================
+    // INFO PRINCIPAL
+    // ===========================
     $sql = "
         SELECT 
             p.id AS profesional_id,
@@ -26,7 +34,7 @@ try {
             p.promedio,
             l.nombre AS localidad
         FROM profesionales p
-        INNER JOIN usuarios u ON p.usuario_id = u.id   -- 🔥 corregido
+        INNER JOIN usuarios u ON p.usuario_id = u.id
         LEFT JOIN localidades l ON p.id_localidad = l.id
         WHERE p.id = ?
     ";
@@ -40,9 +48,9 @@ try {
         exit;
     }
 
-    // ============================
-    // RUBROS DEL PROFESIONAL
-    // ============================
+    // ===========================
+    // RUBROS
+    // ===========================
     $sqlRubros = "
         SELECT r.nombre
         FROM rubros_profesional rp
@@ -54,9 +62,9 @@ try {
     $stmt->execute([$id]);
     $rubros = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
-    // ============================
-    // RESEÑAS
-    // ============================
+    // ===========================
+    // RESEÑAS (ULTIMAS 5)
+    // ===========================
     $sqlResenas = "
         SELECT 
             r.calificacion,
@@ -74,9 +82,9 @@ try {
     $stmt->execute([$id]);
     $resenas = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // ============================
-    // TRABAJOS REALIZADOS (BD REAL)
-    // ============================
+    // ===========================
+    // TRABAJOS REALIZADOS
+    // ===========================
     $sqlTrabajos = "
         SELECT titulo, descripcion, imagen
         FROM trabajos_profesional
@@ -88,16 +96,16 @@ try {
     $stmt->execute([$id]);
     $trabajos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Ajustar rutas relativas → absolutas
+    // Ajustar rutas de imágenes
     foreach ($trabajos as &$t) {
-        if (!str_starts_with($t['imagen'], 'http')) {
+        if ($t['imagen'] && !str_starts_with($t['imagen'], 'http')) {
             $t['imagen'] = BASE_URL . '/' . ltrim($t['imagen'], '/');
         }
     }
 
-    // ============================
-    // RESPUESTA JSON FINAL
-    // ============================
+    // ===========================
+    // RESPUESTA FINAL
+    // ===========================
     echo json_encode([
         "success" => true,
         "data" => [

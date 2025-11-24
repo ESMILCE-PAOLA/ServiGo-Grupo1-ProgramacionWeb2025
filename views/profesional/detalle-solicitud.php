@@ -102,6 +102,11 @@ if (!$id) {
       <i class="bi bi-arrow-left"></i> Volver
     </a>
   </div>
+  <script>
+      window.ID_SOLICITUD = <?= json_encode($id) ?>;
+      window.ID_DENUNCIADO = 0;  //  se actualizará con JS
+  </script>
+
 
 <!-- ====== MODALES ====== -->
 <?php 

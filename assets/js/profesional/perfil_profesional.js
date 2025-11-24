@@ -1,25 +1,23 @@
 document.addEventListener("DOMContentLoaded", async () => {
 
+    console.log("Perfil cargando…", { ID_PROFESIONAL, ES_MI_PERFIL, ROL_USUARIO });
+
     // ===============================
     // Validar ID del profesional
     // ===============================
     if (!ID_PROFESIONAL) {
-        console.error("No se especificó ID_PROFESIONAL");
+        mostrarError("No se especificó el profesional a mostrar.");
         return;
     }
 
     const URL_API = `${BASE_URL}/backend/api/usuarios/profesional/perfil.php?id=${ID_PROFESIONAL}`;
 
     try {
-
-        // ===============================
-        // FETCH A LA API
-        // ===============================
         const resp = await fetch(URL_API);
         const json = await resp.json();
 
         if (!json.success) {
-            mostrarError("Ocurrió un error al obtener el perfil.");
+            mostrarError("No se pudo obtener el perfil del profesional.");
             console.error(json.error);
             return;
         }
@@ -34,9 +32,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         // CARGAR DATOS BÁSICOS
         // ===============================
         document.getElementById("fotoPerfil").src =
-            info.foto
-                ? `${BASE_URL}${info.foto}`
-                : `${BASE_URL}/assets/img/user.png`;
+            info.foto ? `${BASE_URL}${info.foto}` : `${BASE_URL}/assets/img/user.png`;
 
         document.getElementById("nombreProfesional").innerText = info.nombre;
         document.getElementById("promedio").innerText = info.promedio ?? "N/A";
@@ -44,15 +40,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         document.getElementById("localidad").innerText = info.localidad ?? "Sin datos";
         document.getElementById("descripcion").innerText = info.descripcion ?? "Sin descripción";
 
-        // Estado con badge
+        // Badge de estado
         const estadoBadge = document.getElementById("estado");
         estadoBadge.innerText = info.estado;
-
-        if (info.estado === "Activo") {
-            estadoBadge.classList.add("bg-success");
-        } else {
-            estadoBadge.classList.add("bg-secondary");
-        }
+        estadoBadge.classList.add(info.estado === "Activo" ? "bg-success" : "bg-secondary");
 
         // ===============================
         // RUBROS
@@ -60,7 +51,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const contRubros = document.getElementById("rubros");
         contRubros.innerHTML = "";
 
-        if (rubros.length === 0) {
+        if (!rubros.length) {
             contRubros.innerHTML = `<span class="text-muted">Sin rubros</span>`;
         } else {
             rubros.forEach(r => {
@@ -72,31 +63,29 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         // ===============================
-        // TRABAJOS REALIZADOS — CARRUSEL
+        // TRABAJOS REALIZADOS (CARRUSEL)
         // ===============================
         const contCarrusel = document.getElementById("trabajosCarousel");
         contCarrusel.innerHTML = "";
 
-        if (trabajos.length === 0) {
+        if (!trabajos.length) {
             contCarrusel.innerHTML = `
                 <div class="carousel-item active">
                     <div class="text-center text-muted p-5">
-                        Este profesional aún no ha cargado trabajos realizados.
+                        Sin trabajos realizados por el momento.
                     </div>
-                </div>
-            `;
+                </div>`;
         } else {
-            trabajos.forEach((t, index) => {
+            trabajos.forEach((t, idx) => {
                 const item = document.createElement("div");
-                item.className = `carousel-item ${index === 0 ? 'active' : ''}`;
+                item.className = `carousel-item ${idx === 0 ? "active" : ""}`;
 
                 item.innerHTML = `
-                    <img src="${t.imagen}" class="d-block w-100 carrusel-img" alt="${t.titulo}">
+                    <img src="${BASE_URL}${t.imagen}" class="d-block w-100 carrusel-img" alt="${t.titulo}">
                     <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded">
                         <h6 class="fw-bold">${t.titulo}</h6>
                         <p>${t.descripcion}</p>
-                    </div>
-                `;
+                    </div>`;
 
                 contCarrusel.appendChild(item);
             });
@@ -108,23 +97,28 @@ document.addEventListener("DOMContentLoaded", async () => {
         const contResenas = document.getElementById("listaResenas");
         contResenas.innerHTML = "";
 
-        if (resenas.length === 0) {
-            contResenas.innerHTML = `
-                <div class="list-group-item text-muted">No hay reseñas disponibles.</div>
-            `;
+        if (!resenas.length) {
+            contResenas.innerHTML =
+                `<div class="list-group-item text-muted">Aún no hay reseñas.</div>`;
         } else {
             resenas.forEach(r => {
                 const item = document.createElement("div");
-                item.className = "list-group-item list-group-item-light";
+                item.className = "list-group-item";
 
                 item.innerHTML = `
                     <strong>${r.cliente}</strong> – ⭐ ${r.calificacion}<br>
                     <p class="mb-1">${r.comentario}</p>
                     <small class="text-muted">${r.created_at}</small>
                 `;
+
                 contResenas.appendChild(item);
             });
         }
+
+        // ===============================
+        // LISTENERS SEGÚN ROL
+        // ===============================
+        inicializarEventosSegunRol();
 
     } catch (error) {
         console.error("Error en fetch:", error);
@@ -132,14 +126,52 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 });
 
-// ===============================
-// mensaje de error
-// ===============================
+
+// ============================================================================
+// MANEJO DE EVENTOS SEGÚN ROL
+// ============================================================================
+function inicializarEventosSegunRol() {
+
+    // Si es su perfil → no hay botones de cliente
+    if (ES_MI_PERFIL) return;
+
+    // Si es cliente
+    if (ROL_USUARIO === "cliente") {
+
+        const btnFavorito = document.getElementById("btnFavorito");
+        const btnDenunciar = document.getElementById("btnDenunciar");
+        const btnPresupuesto = document.getElementById("btnPresupuesto");
+
+        if (btnFavorito) btnFavorito.addEventListener("click", agregarFavorito);
+        if (btnDenunciar) btnDenunciar.addEventListener("click", denunciarPerfil);
+        if (btnPresupuesto) btnPresupuesto.addEventListener("click", solicitarPresupuesto);
+    }
+}
+
+
+// ============================================================================
+// FUNCIONES CLIENTE → Favoritos / Denuncia / Presupuesto
+// ============================================================================
+async function agregarFavorito() {
+    alert("Favorito agregado (falta endpoint real)");
+}
+
+async function denunciarPerfil() {
+    alert("Denunciar perfil (falta endpoint real)");
+}
+
+async function solicitarPresupuesto() {
+    alert("Solicitar presupuesto (abrir modal o redireccionar)");
+}
+
+
+// ============================================================================
+// MENSAJE DE ERROR
+// ============================================================================
 function mostrarError(msg) {
     const main = document.querySelector("main");
     main.innerHTML = `
         <div class="alert alert-danger text-center mt-5">
             ${msg}
-        </div>
-    `;
+        </div>`;
 }

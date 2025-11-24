@@ -8,71 +8,60 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// ======================================================
-//  MODO DESARROLLO TEMPORAL (solo mientras probás)
-// ======================================================
-if (!isset($_SESSION['user'])) {
-    $_SESSION['user'] = [
-        'id' => 3, // ID real del profesional en la tabla usuarios
-        'nombre' => 'Pablo Profesional',
-        'rol' => 'profesional'
-    ];
-}
-// ======================================================
-
-// Detectar si la petición viene de un fetch() (AJAX)
+// Detectar si la petición es AJAX/fetch()
 $isAjax =
     isset($_SERVER['HTTP_X_REQUESTED_WITH']) ||
     (isset($_SERVER['CONTENT_TYPE']) && str_contains($_SERVER['CONTENT_TYPE'], 'json'));
 
-// Verificar rol
-if (!isRole('profesional')) {
+// Verificar usuario logueado
+if (!isset($_SESSION['user'])) {
 
-    // Si viene desde fetch() → devolver JSON
+    if ($isAjax) {
+        // Respuesta JSON para Fetch
+        header('Content-Type: application/json; charset=utf-8');
+        http_response_code(401);
+        echo json_encode([
+            'success' => false,
+            'error' => 'Debe iniciar sesión.'
+        ]);
+        exit;
+    }
+
+    // Si no es AJAX → redirige
+    header("Location: " . BASE_URL . "/views/login.php");
+    exit;
+}
+
+// Verificar que sea profesional
+if (($_SESSION['user']['rol'] ?? '') !== 'profesional') {
+
     if ($isAjax) {
         header('Content-Type: application/json; charset=utf-8');
         http_response_code(403);
         echo json_encode([
             'success' => false,
-            'error' => 'Acceso no autorizado o sin sesión activa.'
-        ], JSON_UNESCAPED_UNICODE);
+            'error' => 'Acceso no autorizado.'
+        ]);
         exit;
     }
 
-    // Si viene desde navegador → redirigir
-    else {
-        header('Location: ' . BASE_URL . '/views/visitante/index.php');
+    header("Location: " . BASE_URL . "/views/visitante/index.php");
+    exit;
+}
+
+// Verificar que el profesional tenga ID relacionado
+if (empty($_SESSION['user']['profesional_id'])) {
+
+    if ($isAjax) {
+        header('Content-Type: application/json; charset=utf-8');
+        http_response_code(403);
+        echo json_encode([
+            'success' => false,
+            'error' => 'No tiene un perfil profesional asignado.'
+        ]);
         exit;
     }
-}
 
-/*
-// Solo iniciamos sesión si no existe todavía
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
-// Detectar si la petición viene de un fetch() (AJAX)
-$isAjax = (
-  isset($_SERVER['HTTP_X_REQUESTED_WITH']) ||
-  (isset($_SERVER['CONTENT_TYPE']) && str_contains($_SERVER['CONTENT_TYPE'], 'json'))
-);
-
-//  Verificar rol
-if (!isRole('profesional')) {
-  if ($isAjax) {
-    // Si viene desde fetch → devolver JSON
-    header('Content-Type: application/json; charset=utf-8');
-    http_response_code(403);
-    echo json_encode([
-      'success' => false,
-      'error' => 'Acceso no autorizado o sin sesión activa.'
-    ], JSON_UNESCAPED_UNICODE);
+    echo "<h3>No tiene un perfil profesional asignado.</h3>";
     exit;
-  } else {
-    // Si viene desde el navegador → redirigir
-    header('Location: ' . BASE_URL . '/views/visitante/index.php');
-    exit;
-  }
 }
-*/

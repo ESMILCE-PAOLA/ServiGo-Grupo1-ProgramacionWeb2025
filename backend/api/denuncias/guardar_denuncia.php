@@ -1,87 +1,66 @@
 <?php
 require_once __DIR__ . '/../../../includes/db.php';
 require_once __DIR__ . '/../../../includes/session.php';
-require_once __DIR__ . '/../../../includes/auth.php';
 
 header('Content-Type: application/json');
 
 try {
-    // 1. Validación de usuario logueado
-    $user = $_SESSION['user'] ?? null;
-
-    if (!$user || ($user['rol'] ?? '') !== 'profesional') {
+    if (!isset($_SESSION['user'])) {
         http_response_code(401);
-        echo json_encode(['success' => false, 'error' => 'No autorizado']);
+        echo json_encode(['success' => false, 'error' => 'Debe iniciar sesión']);
         exit;
     }
 
-    // 2. Obtener datos enviados en JSON
+    $user = $_SESSION['user'];
+    $rol = $user['rol'];
+
     $input = json_decode(file_get_contents("php://input"), true);
 
-    $idProfesional = intval($user['id'] ?? 0);
-    $idSolicitud = intval($input['solicitud_id'] ?? 0);
     $motivo = trim($input['motivo'] ?? '');
     $detalle = trim($input['detalle'] ?? '');
     $idDenunciado = intval($input['denunciado_id'] ?? 0);
-
-    // 3. Validaciones
-    if ($idSolicitud <= 0) {
-        echo json_encode(['success' => false, 'error' => 'ID de solicitud inválido']);
-        exit;
-    }
-
-    if ($idDenunciado <= 0) {
-        echo json_encode(['success' => false, 'error' => 'No se pudo determinar el usuario denunciado']);
-        exit;
-    }
+    $idSolicitud = intval($input['solicitud_id'] ?? 0);
 
     if (!$motivo) {
-        echo json_encode(['success' => false, 'error' => 'Debe seleccionar un motivo de denuncia']);
+        echo json_encode(['success' => false, 'error' => 'Debe seleccionar un motivo']);
         exit;
     }
-
     if (!$detalle) {
-        echo json_encode(['success' => false, 'error' => 'Debe escribir un detalle']);
+        echo json_encode(['success' => false, 'error' => 'Debe detallar la denuncia']);
+        exit;
+    }
+    if ($idDenunciado <= 0) {
+        echo json_encode(['success' => false, 'error' => 'Usuario denunciado inválido']);
         exit;
     }
 
-    // 4. Insertar denuncia
-    $sql = "INSERT INTO denuncias 
-            (reportante_id, denunciado_id, motivo, detalle, referencia_id, estado)
-            VALUES 
-            (:reportante, :denunciado, :motivo, :detalle, :referencia, 'pendiente')";
+    // QUIÉN DENUNCIA SEGÚN ROL
+    if ($rol === 'profesional') {
+        $reportante_id = $user['id'];
+    } elseif ($rol === 'cliente') {
+        $reportante_id = $user['id'];
+    } else {
+        echo json_encode(['success' => false, 'error' => 'Este rol no puede denunciar']);
+        exit;
+    }
 
-    $stm = $pdo->prepare($sql);
-    $ok = $stm->execute([
-        ':reportante' => $idProfesional,
+    // Insertar denuncia
+    $stmt = $pdo->prepare("
+        INSERT INTO denuncias (reportante_id, denunciado_id, motivo, detalle, referencia_id, estado)
+        VALUES (:reportante, :denunciado, :motivo, :detalle, :referencia, 'pendiente')
+    ");
+
+    $stmt->execute([
+        ':reportante' => $reportante_id,
         ':denunciado' => $idDenunciado,
-        ':motivo'     => $motivo,
-        ':detalle'    => $detalle,
-        ':referencia' => $idSolicitud
+        ':motivo' => $motivo,
+        ':detalle' => $detalle,
+        ':referencia' => ($idSolicitud > 0 ? $idSolicitud : null)
     ]);
 
-    if (!$ok) {
-        echo json_encode(['success' => false, 'error' => 'No se pudo registrar la denuncia']);
-        exit;
-    }
-
-    // 5. Cambiar estado en solicitudes_profesionales
-    $sql2 = "UPDATE solicitudes_profesionales 
-             SET estado = 'pendiente'
-             WHERE solicitud_id = :idSolicitud AND profesional_id = :idProfesional";
-
-    $stm2 = $pdo->prepare($sql2);
-    $stm2->execute([
-        ':idSolicitud' => $idSolicitud,
-        ':idProfesional' => $idProfesional
-    ]);
-
-    echo json_encode(['success' => true, 'message' => 'Denuncia enviada correctamente']);
+    echo json_encode(['success' => true, 'message' => 'Denuncia enviada']);
 
 } catch (Throwable $e) {
     http_response_code(500);
-    echo json_encode([
-        'success' => false,
-        'error' => $e->getMessage()
-    ]);
+    echo json_encode(['success' => false, 'error' => $e->getMessage()]);
 }
