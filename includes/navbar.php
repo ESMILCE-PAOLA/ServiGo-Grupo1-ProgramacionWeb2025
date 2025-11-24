@@ -30,9 +30,9 @@ $BASE = $config['app']['base_url'];
         <li class="nav-item"><a class="nav-link" href="<?= $BASE ?>/views/cliente/perfil.php">Mi perfil</a></li>
 
       <?php elseif ($rol === 'profesional'): ?>
-        <li class="nav-item"><a class="nav-link" href="<?= $BASE ?>/views/profesional/index.php">Inicio</a></li>
-        <li class="nav-item"><a class="nav-link" href="<?= $BASE ?>/views/profesional/solicitudes-profesional.php">Solicitudes</a></li>
-        <li class="nav-item"><a class="nav-link" href="<?= $BASE ?>/views/profesional/perfil_profesional.php">Mi perfil</a></li>
+        <li class="nav-item"><a class="nav-link" href="/ServiGo/ServiGo-Grupo1-ProgramacionWeb2025/views/profesional/index.php">Inicio</a></li>
+        <li class="nav-item"><a class="nav-link" href="/ServiGo/ServiGo-Grupo1-ProgramacionWeb2025/views/profesional/solicitudes-profesional.php">Solicitudes</a></li>
+        <li class="nav-item"><a class="nav-link" href="/ServiGo/ServiGo-Grupo1-ProgramacionWeb2025/views/profesional/perfil_profesional.php?id=<?= $_SESSION['user']['profesional_id'] ?>">Mi perfil</a></li>
 
       <?php elseif ($rol === 'administrador'): ?>
         <li class="nav-item"><a class="nav-link" href="<?= $BASE ?>/views/administrador/index.php">Inicio</a></li>
