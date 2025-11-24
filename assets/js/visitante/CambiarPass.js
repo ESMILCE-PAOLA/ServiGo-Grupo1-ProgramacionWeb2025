@@ -22,6 +22,9 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function validar() {
+
+  console.log(email.value);
+  console.log(clave.value);
   if (email.value.trim() === "") {
     divMail.textContent = "El email es obligatorio.";
     email.classList.add("is-invalid");
@@ -51,7 +54,7 @@ function validar() {
   }
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const regex = /^(?=.[°|!"#$%&/()=?'¡¿´¨+{\[}\]\-\_:.,;><]).{8,}$/;
+  const regex = /^(?=.*[°|!"#$%&/()=?'¡¿´¨+{}\[\]_\-:.,;><]).{8,}$/;
 
   let okE = emailRegex.test(email.value.trim());
   let ok1 = regex.test(clave.value);
