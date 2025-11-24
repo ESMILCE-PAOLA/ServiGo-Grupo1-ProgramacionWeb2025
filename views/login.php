@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <link rel="stylesheet" href="../assets/css/login.css">
+<script src="login.js"></script>
 </head>
 <body>
 <?php require __DIR__ . '/../includes/header.php'; ?>
@@ -22,23 +23,25 @@
 
                         <div class="alert alert-danger d-none" role="alert" id="alert"></div>
 
-                        <form id="fLogin" action="" method="POST" id="formulario">
+
+
+                        <form action="log.php" method="POST" id="formulario">
 
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email</label>
-                                <input type="text" class="form-control" name="email" id="email"
-                                    placeholder="Ingresa tu email" required>
+                                <input type="email" class="form-control" name="email" id="email"
+                                    placeholder="Ingresa tu email"  minlength="5" maxlength="80"  required>
                                 <p class="text-danger email-mal d-none"></p>
                             </div>
 
                             <div class="mb-3">
                                 <label for="password" class="form-label">Contraseña</label>
                                 <input type="password" class="form-control" id="password"
-                                    placeholder="Ingresa tu contraseña" name="password" required>
+                                    placeholder="Ingresa tu contraseña" name="password" minlength="6" maxlength="32" required>
                                 <p class="text-danger clave-mal d-none"></p>
                             </div>
                             <div class="boton">
-                                <input type="submit" value="Iniciar Sesión" class="btn iniciar-sesion">
+                                <input type="submit" value="Iniciar Sesión" class="btn iniciar-sesion" name="boton" id="boton">
                             </div>
                         </form>
                           <div id="loginMsg" class="alert" style="display:none"></div>
@@ -58,6 +61,9 @@
 </body>
 </html>
 
+
+<!--
+
 <script>
 document.getElementById('fLogin').addEventListener('submit', async (e)=>{
   e.preventDefault();
@@ -73,3 +79,4 @@ document.getElementById('fLogin').addEventListener('submit', async (e)=>{
 });
 </script>
 
+-->

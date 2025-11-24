@@ -7,6 +7,7 @@
  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script> 
+  <script src="registro.js"></script>
 
 
   <link rel="stylesheet" href="../../assets/css/registro.css">
@@ -30,20 +31,20 @@
 
                         <div class="mb-3">
                             <label for="nombre">Nombre completo</label>
-                            <input type="text" name="nombre" id="nombre" class="form-control" pattern="[A-Za-z ]{6,30}"
+                            <input type="text" name="nombre" id="nombre" class="form-control" pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ ]{6,40}"
                                 placeholder="Juan Perez" required>
                             <p class="errorNombre text-danger"></p>
                         </div>
                         <div class="mb-3">
                             <label for="email" class="form-label">Correo electrónico</label>
                             <input type="email" class="form-control" id="email" name="email"
-                                placeholder="jperez@correo.com" required />
+                                placeholder="jperez@correo.com" minlength="8" maxlength="80" required />
                             <p class="text-danger email-mal d-none"></p>
                         </div>
                         <div class="mb-3">
                             <label for="password" class="form-label">Contraseña</label>
                             <input type="password" class="form-control" id="password" placeholder="Contraseña"
-                                name="password" required>
+                                name="password" minlength="6" maxlength="32" required>
                             <p class="text-danger clave-mal d-none"></p>
                         </div>
                         <div class="boton">
@@ -65,6 +66,8 @@
 </body>
 </html>
 
+<!--
+
 <script>
 document.getElementById('fReg').addEventListener('submit', async (e)=>{
   e.preventDefault();
@@ -77,3 +80,5 @@ document.getElementById('fReg').addEventListener('submit', async (e)=>{
     m.textContent = err.message; m.className='alert error'; m.style.display='block';
   }
 });
+
+-->
