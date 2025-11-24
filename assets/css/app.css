@@ -1,6 +1,5 @@
 /* ==========================================================
    Estilos Globales - ServiGo
-   Autor: Esmilce 💛
    Descripción:
    Estilos base compartidos por TODA la aplicación:
    tipografías, colores, espaciados y componentes comunes.
@@ -22,6 +21,7 @@ a {
     color: #0d6efd;
     text-decoration: none;
 }
+
 a:hover {
     text-decoration: underline;
 }
@@ -42,7 +42,6 @@ h1, h2, h3, h4, h5 {
     box-shadow: 0 2px 6px rgba(0,0,0,0.06);
 }
 
-/* Hover suave */
 .card:hover {
     box-shadow: 0 4px 12px rgba(0,0,0,0.12);
     transition: 0.2s ease-in-out;
@@ -115,55 +114,50 @@ table td input {
     box-shadow: 0 0 4px rgba(13, 110, 253, 0.25);
 }
 
-/* Label */
 .form-label {
     font-weight: 500;
 }
 
 /* ------------------------------
-   NAVBAR
+   NAVBAR – MODO CLARO (sin !important)
 --------------------------------- */
-.navbar {
-    background-color: #111 !important;
+.navbar-sg {
+    background-color: #ffffff;
+    border-bottom: 1px solid #e3e3e3;
 }
 
-.navbar-brand {
+.navbar-sg .navbar-brand {
     font-weight: bold;
-    color: #ffc107 !important;
+    color: #0d6efd;
 }
 
-/* Menú del navbar */
-.nav-link {
-    color: #e5e5e5 !important;
+.navbar-sg .nav-link {
+    color: #212529;
     font-weight: 500;
 }
-.nav-link:hover {
-    color: #ffffff !important;
+
+.navbar-sg .nav-link:hover {
+    color: #0d6efd;
 }
 
 /* ------------------------------
    UTILIDADES
 --------------------------------- */
-
-/* Línea divisoria suave */
 .divider {
     height: 1px;
     background-color: #e3e3e3;
     margin: 1rem 0;
 }
 
-/* Margen estándar */
 .m-section {
     margin-top: 2rem;
     margin-bottom: 2rem;
 }
 
-/* Íconos más centrados */
 i.bi {
     vertical-align: middle;
 }
 
-/* Botón de eliminar ítem (tachito) */
 .btnEliminar i.bi-trash {
     font-size: 1.1rem;
 }
