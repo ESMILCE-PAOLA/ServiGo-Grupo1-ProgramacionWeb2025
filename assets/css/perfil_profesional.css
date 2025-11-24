@@ -1,0 +1,97 @@
+/* ============================================================
+   PERFIL PROFESIONAL — ESTILOS ESPECÍFICOS 
+   ============================================================ */
+
+/* ------------------------------
+   FOTO DE PERFIL
+--------------------------------- */
+.foto-perfil {
+    width: 180px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 4px solid #ffffff;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+}
+
+
+/* ------------------------------
+   TARJETA INFORMACIÓN
+--------------------------------- */
+.card-body p {
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+}
+
+
+/* ------------------------------
+   BOTONES ESPECÍFICOS
+--------------------------------- */
+.btn-warning {
+    color: #000;
+    font-weight: 500;
+}
+
+.btn-outline-danger,
+.btn-outline-secondary,
+.btn-outline-primary {
+    font-weight: 500;
+}
+
+
+/* ------------------------------
+   DESCRIPCIÓN DEL PROFESIONAL
+--------------------------------- */
+#descripcion {
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+
+/* ============================================================
+   CARRUSEL — TRABAJOS REALIZADOS
+   ============================================================ */
+
+#carouselTrabajos {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.10);
+}
+
+.carrusel-img {
+    height: 350px;
+    object-fit: cover;
+}
+
+/* Caption (texto sobre la imagen) */
+.carousel-caption {
+    background: rgba(0, 0, 0, 0.55);
+    border-radius: 6px;
+    padding: 8px 12px;
+}
+
+.carousel-caption h6,
+.carousel-caption p {
+    color: #ffffff;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+}
+
+/* Flechas */
+.carousel-control-next-icon,
+.carousel-control-prev-icon {
+    filter: invert(1);
+}
+
+
+/* ============================================================
+   RESEÑAS DE CLIENTES
+   ============================================================ */
+
+.list-group-item {
+    background-color: #ffffff;
+    border-color: #e0e0e0;
+}
+
+.list-group-item-light {
+    background-color: #fafafa;
+}

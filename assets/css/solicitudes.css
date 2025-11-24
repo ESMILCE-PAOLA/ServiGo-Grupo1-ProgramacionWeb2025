@@ -1,48 +1,31 @@
 /* ==========================================================
-   Módulo: Solicitudes – Profesional
-   Proyecto: ServiGo
-   Descripción: Estilos claros, modernos y similares al front-end original
+   SOLICITUDES – PROFESIONAL 
    ========================================================== */
 
-/* ====== CONTENEDOR GENERAL ====== */
-body {
-  background-color: #f8f9fa;
-  color: #212529;
-}
-
+/* TITULOS */
 .container h2 {
   color: #212529;
   font-weight: 600;
 }
 
-/* ====== FORMULARIO DE FILTROS ====== */
-form#formFiltros .form-label {
+/* FORMULARIO DE FILTROS */
+#formFiltros .form-label {
   font-weight: 500;
-  color: #212529;
 }
 
-form#formFiltros .form-control,
-form#formFiltros .form-select {
-  border: 1px solid #ced4da;
+#formFiltros .form-control,
+#formFiltros .form-select {
   border-radius: 6px;
 }
 
-form#formFiltros button.btn-primary {
-  background-color: #007bff;
-  border-color: #007bff;
+#formFiltros .btn-primary {
   font-weight: 500;
 }
 
-form#formFiltros button.btn-primary:hover {
-  background-color: #0056b3;
-}
-
-/* ====== TABLA ====== */
+/* TABLA */
 .table {
   border-radius: 8px;
   overflow: hidden;
-  background-color: #fff;
-  color: #212529;
 }
 
 .table thead {
@@ -58,7 +41,7 @@ form#formFiltros button.btn-primary:hover {
   background-color: #e9ecef;
 }
 
-/* ====== ESTADOS ====== */
+/* ESTADOS */
 .estado {
   display: inline-block;
   padding: 4px 10px;
@@ -69,27 +52,26 @@ form#formFiltros button.btn-primary:hover {
 }
 
 .estado.pendiente {
-  background-color: #ffc107; /* amarillo */
+  background-color: #ffc107;
   color: #212529;
 }
 
 .estado.aceptada {
-  background-color: #28a745; /* verde */
+  background-color: #28a745;
 }
 
 .estado.rechazada {
-  background-color: #dc3545; /* rojo */
+  background-color: #dc3545;
 }
 
-/* ====== BOTONES ====== */
+/* BOTÓN VER */
 .btn-ver {
   background-color: #0dcaf0;
   color: #212529;
   font-weight: 500;
-  border: none;
   border-radius: 6px;
   padding: 5px 12px;
-  transition: all 0.2s ease-in-out;
+  transition: 0.2s;
 }
 
 .btn-ver:hover {
