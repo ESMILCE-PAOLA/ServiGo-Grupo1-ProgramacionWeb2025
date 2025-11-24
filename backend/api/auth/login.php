@@ -2,6 +2,10 @@
 require __DIR__ . '/../../db.php';
 require __DIR__ . '/../../../includes/session.php';
 
+$config = include __DIR__ . '/../config.php';
+$BASE = $config['app']['base_url'];
+
+
 $payload = json_decode(file_get_contents('php://input'), true) ?? [];
 $email = trim($payload['email'] ?? '');
 $pass  = $payload['password'] ?? '';
@@ -19,9 +23,9 @@ if(!$u || !password_verify($pass, $u['password_hash'] ?? '')){
 }
 $_SESSION['user'] = ['id'=>$u['id'],'nombre'=>$u['nombre'],'email'=>$u['email'],'rol_slug'=>$u['rol_slug']];
 $redir = '/ServiGo/';
-if ($u['rol_slug']==='administrador') $redir = '/ServiGo/views/administrador/dashboard.php';
-if ($u['rol_slug']==='cliente') $redir = '/ServiGo/views/cliente/dashboard.php';
-if ($u['rol_slug']==='profesional') $redir = '/ServiGo/views/profesional/dashboard.php';
+if ($u['rol_slug']==='administrador') $redir ="<?= $BASE ?>/views/administrador/dashboard.php";
+if ($u['rol_slug']==='cliente') $redir = "<?= $BASE ?>/views/cliente/dashboard.php";
+if ($u['rol_slug']==='profesional') $redir = "<?= $BASE ?>/views/profesional/dashboard.php";
 
 header('Content-Type: application/json');
 echo json_encode(['success'=>true,'redirect'=>$redir]);

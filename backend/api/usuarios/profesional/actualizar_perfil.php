@@ -1,66 +1,132 @@
 <?php
-require_once __DIR__ . '/../../../../includes/db.php';
-require_once __DIR__ . '/../../../../includes/session.php';
-require_once __DIR__ . '/../../../../includes/auth.php';
-
+require_once __DIR__ . '/../../includes/db.php';
 header('Content-Type: application/json');
 
+// ================================
+//  VALIDAR ID
+// ================================
+$id = $_GET['id'] ?? null;
+
+if (!$id) {
+    echo json_encode(["success" => false, "error" => "ID no especificado"]);
+    exit;
+}
+
 try {
-  $user = $_SESSION['user'] ?? null;
-  if (!$user || ($user['rol'] ?? '') !== 'profesional') {
-    http_response_code(401);
-    echo json_encode(['success' => false, 'error' => 'No autorizado']);
-    exit;
-  }
 
-  $nombre = trim($_POST['nombre'] ?? '');
-  $localidad = trim($_POST['localidad'] ?? '');
-  $experiencia = trim($_POST['experiencia'] ?? '');
-  $rubros = trim($_POST['rubros'] ?? '');
-  $descripcion = trim($_POST['descripcion'] ?? '');
-  $foto = null;
+    // ================================
+    //  DATOS DEL FORMULARIO
+    // ================================
+    $nombre       = $_POST['nombre'] ?? '';
+    $experiencia  = $_POST['experiencia'] ?? '';
+    $descripcion  = $_POST['descripcion'] ?? '';
+    $localidad_id = $_POST['localidad'] ?? '';
+    $rubros       = $_POST['rubros'] ?? [];
+    $fotoNueva    = $_FILES['foto'] ?? null;
 
-  // Validaciones mínimas
-  if (!$nombre || !$localidad) {
-    echo json_encode(['success' => false, 'error' => 'Faltan campos obligatorios.']);
-    exit;
-  }
+    // Validación básica
+    if (trim($nombre) === '' || trim($experiencia) === '' || trim($descripcion) === '') {
+        echo json_encode(["success" => false, "error" => "Todos los campos son obligatorios."]);
+        exit;
+    }
 
-  // Subir imagen si se seleccionó una nueva
-  if (!empty($_FILES['foto']['name'])) {
-    $ruta = __DIR__ . '/../../../../assets/img/profesionales/';
-    $nombreArchivo = 'perfil_' . $user['id'] . '_' . time() . '.jpg';
-    move_uploaded_file($_FILES['foto']['tmp_name'], $ruta . $nombreArchivo);
-    $foto = '/assets/img/profesionales/' . $nombreArchivo;
-  }
+    // ================================
+    //  TRAER FOTO ACTUAL
+    // ================================
+    $sqlFoto = "SELECT foto FROM profesionales WHERE id = ?";
+    $stmt = $pdo->prepare($sqlFoto);
+    $stmt->execute([$id]);
+    $prof = $stmt->fetch(PDO::FETCH_ASSOC);
 
-  // Actualizar datos en la base
-  $sql = "UPDATE usuarios 
-          SET nombre = :nombre,
-              localidad = :localidad,
-              experiencia = :experiencia,
-              rubros = :rubros,
-              descripcion = :descripcion";
+    if (!$prof) {
+        echo json_encode(["success" => false, "error" => "Profesional no encontrado."]);
+        exit;
+    }
 
-  if ($foto) $sql .= ", foto = :foto";
-  $sql .= " WHERE id = :id";
+    $fotoActual = $prof['foto'];
 
-  $params = [
-    ':nombre' => $nombre,
-    ':localidad' => $localidad,
-    ':experiencia' => $experiencia,
-    ':rubros' => $rubros,
-    ':descripcion' => $descripcion,
-    ':id' => $user['id']
-  ];
-  if ($foto) $params[':foto'] = $foto;
+    // ================================
+    //  PROCESAR FOTO NUEVA
+    // ================================
+    if ($fotoNueva && $fotoNueva['error'] === UPLOAD_ERR_OK) {
 
-  $stm = $pdo->prepare($sql);
-  $stm->execute($params);
+        $ext = pathinfo($fotoNueva['name'], PATHINFO_EXTENSION);
+        $nombreArchivo = "prof_" . $id . "_" . time() . "." . $ext;
 
-  echo json_encode(['success' => true]);
+        // Ruta física real del proyecto
+        $basePath = dirname(__DIR__, 4);
 
-} catch (Throwable $e) {
-  http_response_code(500);
-  echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+        // Carpeta donde se guardan las fotos
+        $carpeta = $basePath . "/assets/uploads/profesionales";
+
+        // Crear carpeta si no existe
+        if (!is_dir($carpeta)) {
+            mkdir($carpeta, 0777, true);
+        }
+
+        // Ruta final del archivo en el sistema
+        $rutaDestino = $carpeta . "/" . $nombreArchivo;
+
+        // Mover archivo subido
+        if (!move_uploaded_file($fotoNueva['tmp_name'], $rutaDestino)) {
+            echo json_encode(["success" => false, "error" => "Error al guardar la foto en el servidor."]);
+            exit;
+        }
+
+        // Ruta pública que se guarda en BD
+        $rutaBD = "/assets/uploads/profesionales/" . $nombreArchivo;
+
+    } else {
+        // Se conserva la foto actual
+        $rutaBD = $fotoActual;
+    }
+
+    // ================================
+    //  ACTUALIZAR TABLA `profesionales`
+    // ================================
+    $sql = "UPDATE profesionales 
+            SET experiencia = ?, descripcion = ?, id_localidad = ?, foto = ?
+            WHERE id = ?";
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$experiencia, $descripcion, $localidad_id, $rutaBD, $id]);
+
+    // ================================
+    //  ACTUALIZAR NOMBRE EN `usuarios`
+    // ================================
+    $sqlU = "UPDATE usuarios 
+             SET nombre = ? 
+             WHERE id = (SELECT usuario_id FROM profesionales WHERE id = ?)";
+
+    $stmt = $pdo->prepare($sqlU);
+    $stmt->execute([$nombre, $id]);
+
+    // ================================
+    //  ACTUALIZAR RUBROS
+    // ================================
+    $pdo->prepare("DELETE FROM rubros_profesional WHERE profesional_id = ?")
+        ->execute([$id]);
+
+    $sqlInsert = "INSERT INTO rubros_profesional (profesional_id, rubro_id) VALUES (?, ?)";
+    $stmtInsert = $pdo->prepare($sqlInsert);
+
+    foreach ($rubros as $r) {
+        $stmtInsert->execute([$id, $r]);
+    }
+
+    // ================================
+    //  RESPUESTA EXITOSA
+    // ================================
+    echo json_encode([
+        "success" => true,
+        "message" => "Perfil actualizado correctamente.",
+        "foto" => $rutaBD
+    ]);
+
+} catch (Exception $e) {
+
+    echo json_encode([
+        "success" => false,
+        "error" => $e->getMessage()
+    ]);
 }
