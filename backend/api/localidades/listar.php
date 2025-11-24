@@ -1,21 +1,9 @@
 <?php
-require_once __DIR__ . '/../../../includes/db.php';
+require_once __DIR__ . '/../../db.php';
 header('Content-Type: application/json');
-
 try {
-    $sql = "SELECT id, nombre FROM localidades ORDER BY nombre ASC";
-    $stm = $pdo->query($sql);
-    $data = $stm->fetchAll(PDO::FETCH_ASSOC);
-
-    echo json_encode([
-        'success' => true,
-        'data' => $data
-    ]);
-
-} catch (Throwable $e) {
-
-    echo json_encode([
-        'success' => false,
-        'error' => $e->getMessage()
-    ]);
+    $stmt = $pdo->query("SELECT id, nombre FROM localidades ORDER BY nombre ASC");
+    echo json_encode(['success' => true, 'data' => $stmt->fetchAll()]);
+} catch (Exception $e) {
+    echo json_encode(['success' => false, 'error' => $e->getMessage()]);
 }

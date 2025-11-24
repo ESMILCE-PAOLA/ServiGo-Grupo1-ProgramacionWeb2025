@@ -3,7 +3,7 @@
 // CONFIGURACIÓN GLOBAL DEL PROYECTO
 // ==============================
 
-define('BASE_URL', 'http://localhost:8080/ServiGo/ServiGo-Grupo1-ProgramacionWeb2025');
+define('BASE_URL', 'http://localhost/ServiGo/ServiGo-Grupo1-ProgramacionWeb2025');
 
 define('DB_HOST', '127.0.0.1');
 define('DB_PORT', '3306');
