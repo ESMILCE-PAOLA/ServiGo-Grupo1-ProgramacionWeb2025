@@ -1,47 +1,37 @@
 <?php
-session_start();
-require_once '../db.php'; // Debes crear este archivo para la conexión PDO/Mysqli
-
-if (!isset($_SESSION['usuario_id']) || $_SESSION['rol_id'] != 2) {
-    header('Location: ../login.php');
-    exit;
-}
-
-// Obtener solicitudes del cliente
-$stmt = $pdo->prepare("SELECT s.*, l.nombre AS localidad FROM solicitudes s LEFT JOIN localidades l ON s.id_localidad = l.id WHERE s.cliente_id=? ORDER BY s.created_at DESC");
-$stmt->execute([$_SESSION['usuario_id']]);
-$solicitudes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+//require_once __DIR__ . '/../../includes/guard_cliente.php';
+$active = 'solicitudes';
+include_once __DIR__ . '/../../includes/header.php';
+include_once __DIR__ . '/../../includes/navbar.php';
 ?>
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Panel de Cliente | ServiGo</title>
-</head>
-<body>
-    <h1>Bienvenido, <?=$_SESSION['nombre'] ?? 'Cliente'?></h1>
-    <a href="nueva_solicitud.php">Crear Nueva Solicitud</a> | 
-    <a href="perfil.php">Mi Perfil</a> | 
-    <a href="../logout.php">Salir</a>
-    <h2>Mis Solicitudes</h2>
-    <table>
-        <thead>
-            <tr><th>ID</th><th>Título</th><th>Estado</th><th>Localidad</th><th>Creada</th><th>Acciones</th></tr>
-        </thead>
-        <tbody>
-            <?php foreach ($solicitudes as $sol) : ?>
-            <tr>
-                <td><?=$sol['id']?></td>
-                <td><?=$sol['titulo']?></td>
-                <td><?=$sol['estado']?></td>
-                <td><?=$sol['localidad']?></td>
-                <td><?=$sol['created_at']?></td>
-                <td>
-                    <a href="solicitud_cliente.php?id=<?=$sol['id']?>">Ver</a> | 
-                    <a href="presupuestos.php?solicitud_id=<?=$sol['id']?>">Presupuestos</a>
-                </td>
-            </tr>
-            <?php endforeach;?>
-        </tbody>
-    </table>
-</body>
-</html>
+
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Mis Solicitudes</h2>
+        <a href="nueva_solicitud.php" class="btn btn-primary">
+            <i class="bi bi-plus-lg"></i> Nueva Solicitud
+        </a>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Título</th>
+                        <th>Localidad</th>
+                        <th>Estado</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaSolicitudes">
+                    <tr><td colspan="5" class="text-center py-4">Cargando...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="<?= BASE_URL ?>/assets/js/cliente/index.js?v=<?= time() ?>"></script>
+<?php include_once __DIR__ . '/../../includes/footer.php'; ?>

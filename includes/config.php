@@ -4,7 +4,7 @@
 // ==============================
 
 // URL base (ajustenla según su entorno yo tengo el puerto 8080 pero ustedes deben tener 8000)
-define('BASE_URL', 'http://localhost:8080/ServiGo/ServiGo-Grupo1-ProgramacionWeb2025');
+define('BASE_URL', 'http://localhost/ServiGo/ServiGo-Grupo1-ProgramacionWeb2025');
 
 // Datos de conexión a la base
 define('DB_HOST', '127.0.0.1');

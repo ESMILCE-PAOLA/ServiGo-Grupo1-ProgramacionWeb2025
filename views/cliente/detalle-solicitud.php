@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../../includes/guard_cliente.php';
+//require_once __DIR__ . '/../../includes/guard_cliente.php';
 require_once __DIR__ . '/../../includes/header.php';
 require_once __DIR__ . '/../../includes/navbar.php';
 
