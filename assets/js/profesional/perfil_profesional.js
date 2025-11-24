@@ -81,7 +81,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 item.className = `carousel-item ${idx === 0 ? "active" : ""}`;
 
                 item.innerHTML = `
-                    <img src="${BASE_URL}${t.imagen}" class="d-block w-100 carrusel-img" alt="${t.titulo}">
+                    <img src="${t.imagen}" class="d-block w-100 carrusel-img" alt="${t.titulo}">
                     <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded">
                         <h6 class="fw-bold">${t.titulo}</h6>
                         <p>${t.descripcion}</p>
@@ -90,6 +90,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 contCarrusel.appendChild(item);
             });
         }
+
 
         // ===============================
         // RESEÑAS
